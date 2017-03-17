@@ -49,7 +49,6 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     // Internal vars
     
     Model homer;
-    Model floor;
     
     float scale;
     float FOV;

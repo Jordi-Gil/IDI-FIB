@@ -48,7 +48,7 @@ void MyGLWidget::paintGL ()
   glBindVertexArray(VAO_Floor);
   
   //pintem
-  glDrawArrays(GL_TRIANGLES, 0, floor.faces().size()*3);
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
   
   glBindVertexArray (0);
 }
@@ -140,8 +140,24 @@ void MyGLWidget::createBuffers ()
   glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(colorLoc);
 
-  //carrega el model
-  floor.load("../../models/Floor.obj");  
+  glm::vec3 Vertices[4];  // Tres vèrtexs amb X, Y i Z
+  glm::vec3 Colors[4];
+  
+  Vertices[0] = glm::vec3(-1.0,-1.0,1.0);
+  Vertices[1] = glm::vec3(1.0,-1.0,1.0);
+  Vertices[2] = glm::vec3(-1.0,-1.0,-1.0);
+  Vertices[3] = glm::vec3(1.0,-1.0,-1.0);
+  /*
+  Colors[0] = glm::vec3(1.0,0.0,0.0);
+  Colors[1] = glm::vec3(1.0,1.0,0.0);
+  Colors[2] = glm::vec3(0.0,1.0,0.0);
+  Colors[3] = glm::vec3(0.0,1.0,1.0);
+  */
+  
+  Colors[0] = glm::vec3(1.0,1.0,1.0);
+  Colors[1] = glm::vec3(1.0,1.0,1.0);
+  Colors[2] = glm::vec3(1.0,1.0,1.0);
+  Colors[3] = glm::vec3(1.0,1.0,1.0);
   
   //Creació del Vertex Array Object
   glGenVertexArrays(1, &VAO_Floor);
@@ -149,7 +165,7 @@ void MyGLWidget::createBuffers ()
   
   glGenBuffers(1,&VBO_FloorPos);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_FloorPos);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*floor.faces().size()*3*3, floor.VBO_vertices(),GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices,GL_STATIC_DRAW);
   
   //Activem l'atribut vertexLoc
   glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -157,8 +173,10 @@ void MyGLWidget::createBuffers ()
   
   glGenBuffers(1, &VBO_FloorCol);
   glBindBuffer(GL_ARRAY_BUFFER, VBO_FloorCol);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*floor.faces().size()*3*3, floor.VBO_matdiff(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
   
+  glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+  glEnableVertexAttribArray(colorLoc);
   
   glBindVertexArray (0);
 }
