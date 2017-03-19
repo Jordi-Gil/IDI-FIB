@@ -35,6 +35,10 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void createBuffers ();
     void carregaShaders ();
     void modelTransform();
+    void carregaCaseta();
+    void carregaCaseta2();
+    void pinta_caseta();
+    void pinta_caseta2();
     
     // attribute locations
     GLuint vertexLoc;

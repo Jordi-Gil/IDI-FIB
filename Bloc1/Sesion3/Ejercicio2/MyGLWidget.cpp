@@ -33,19 +33,10 @@ void MyGLWidget::initializeGL ()
 void MyGLWidget::paintGL ()
 {
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
-
-  // Activem l'Array a pintar 
-  glBindVertexArray(VAO);
-  
+    
   modelTransform();
-  
-  // Pintem l'escena
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
-  
-  //Activem l'Array a pintar
-  glBindVertexArray(VAO2);
-  // Pintem l'escena
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+  pinta_caseta();
+  pinta_caseta2();
   
   // Desactivem el VAO
   glBindVertexArray(0);
@@ -60,8 +51,69 @@ void MyGLWidget::resizeGL (int w, int h)
 
 void MyGLWidget::createBuffers ()
 {
-  glm::vec3 Vertices[5];  // Tres vèrtexs amb X, Y i Z
-  glm::vec3 Vertices2[5];
+    carregaCaseta();
+    carregaCaseta2();
+  
+    // Desactivem el VAO
+    glBindVertexArray(0);
+    
+}
+
+
+
+void MyGLWidget::carregaShaders()
+{
+  // Creem els shaders per al fragment shader i el vertex shader
+  QOpenGLShader fs (QOpenGLShader::Fragment, this);
+  QOpenGLShader vs (QOpenGLShader::Vertex, this);
+  // Carreguem el codi dels fitxers i els compilem
+  fs.compileSourceFile("shaders/fragshad.frag");
+  vs.compileSourceFile("shaders/vertshad.vert");
+  // Creem el program
+  program = new QOpenGLShaderProgram(this);
+  // Li afegim els shaders corresponents
+  program->addShader(&fs);
+  program->addShader(&vs);
+  // Linkem el program
+  program->link();
+  // Indiquem que aquest és el program que volem usar
+  program->bind();
+
+  
+  varLoc = glGetUniformLocation (program->programId(),"val");
+  sizeLoc = glGetUniformLocation (program->programId(),"WindowSize");
+  vertexLoc = glGetAttribLocation (program->programId(), "vertex");
+  colorLoc =  glGetAttribLocation (program->programId(), "scolor");
+  transLoc = glGetUniformLocation (program->programId(), "matTG");
+  
+  
+  glm::mat4 TG(1.0); //Matriu identidat
+  TG = glm::translate (TG,glm::vec3(0.0,0.0,0.0));
+  glUniformMatrix4fv(transLoc,1,GL_FALSE,&TG[0][0]);
+  
+}
+
+/*
+        ***********************
+        *                     *
+        *    MIS FUNCIONES    *
+        *                     *
+        ***********************
+
+*/
+
+/*
+ ************************************
+ *                                  *
+ *   FUNCIONES DE CARREGA DE VAOs   *
+ *                                  *
+ ************************************
+*/
+
+void MyGLWidget::carregaCaseta()
+{
+    
+  glm::vec3 Vertices[5];
   glm::vec3 Colors[5];
   
   Vertices[0] = glm::vec3(-1.0,-0.5,0.0);
@@ -69,12 +121,6 @@ void MyGLWidget::createBuffers ()
   Vertices[2] = glm::vec3(-1.0,0.5,0.0);
   Vertices[3] = glm::vec3(0.0,0.5,0.0);
   Vertices[4] = glm::vec3(-0.5,1.0,0.0);
-  
-  Vertices2[0] = glm::vec3(0.5,-1.0,0.0);
-  Vertices2[1] = glm::vec3(0.0,-0.5,0.0);
-  Vertices2[2] = glm::vec3(1.0,-0.5,0.0);
-  Vertices2[3] = glm::vec3(0.0,0.5,0.0);
-  Vertices2[4] = glm::vec3(1.0,0.5,0.0);
   
   Colors[0] = glm::vec3(1.0,0.0,0.0);
   Colors[1] = glm::vec3(1.0,1.0,0.0);
@@ -100,8 +146,25 @@ void MyGLWidget::createBuffers ()
   glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(colorLoc);
   
+}
+
+void MyGLWidget::carregaCaseta2()
+{
+    
+  glm::vec3 Vertices2[5];
+  glm::vec3 Colors[5];
   
-  //VAO 2
+  Vertices2[0] = glm::vec3(0.5,-1.0,0.0);
+  Vertices2[1] = glm::vec3(0.0,-0.5,0.0);
+  Vertices2[2] = glm::vec3(1.0,-0.5,0.0);
+  Vertices2[3] = glm::vec3(0.0,0.5,0.0);
+  Vertices2[4] = glm::vec3(1.0,0.5,0.0);
+  
+  Colors[0] = glm::vec3(1.0,0.0,0.0);
+  Colors[1] = glm::vec3(1.0,1.0,0.0);
+  Colors[2] = glm::vec3(0.0,1.0,0.0);
+  Colors[3] = glm::vec3(0.0,1.0,1.0);
+  Colors[4] = glm::vec3(0.0,0.0,1.0);
   
    // Creació del Vertex Array Object (VAO) que usarem per pintar
   glGenVertexArrays(1, &VAO2);
@@ -121,10 +184,43 @@ void MyGLWidget::createBuffers ()
   // Activem l'atribut que farem servir per vèrtex	
   glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(colorLoc);
-  
-  // Desactivem el VAO
-  glBindVertexArray(0);
 }
+
+/*
+ ********************************
+ *                              *
+ *   FUNCIONES DE PINTAR VAOs   *
+ *                              *
+ ********************************
+*/
+
+void MyGLWidget::pinta_caseta()
+{
+    // Activem l'Array a pintar 
+  glBindVertexArray(VAO);
+  
+  // Pintem l'escena
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+  
+}
+
+void MyGLWidget::pinta_caseta2()
+{
+    //Activem l'Array a pintar
+  glBindVertexArray(VAO2);
+  // Pintem l'escena
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+}
+
+
+/*
+ ***********************************
+ *                                 *
+ *   FUNCIONES DE TRANSFORMACIÓN   *
+ *                                 *
+ ***********************************
+*/
+
 
 void MyGLWidget::modelTransform(){
     
@@ -134,6 +230,15 @@ void MyGLWidget::modelTransform(){
     matTG = glm::scale(matTG,glm::vec3(scl,scl,scl));
     glUniformMatrix4fv(transLoc,1,GL_FALSE,&matTG[0][0]);
 }
+
+/*
+ ********************************
+ *                              *
+ *   FUNCIONES DE INTERACCIÓN   *
+ *                              *
+ ********************************
+*/
+
 
 void MyGLWidget::keyPressEvent(QKeyEvent *e){
     makeCurrent();
@@ -181,36 +286,4 @@ void MyGLWidget::keyPressEvent(QKeyEvent *e){
         default: e->ignore();
     }
     update();
-}
-
-void MyGLWidget::carregaShaders()
-{
-  // Creem els shaders per al fragment shader i el vertex shader
-  QOpenGLShader fs (QOpenGLShader::Fragment, this);
-  QOpenGLShader vs (QOpenGLShader::Vertex, this);
-  // Carreguem el codi dels fitxers i els compilem
-  fs.compileSourceFile("shaders/fragshad.frag");
-  vs.compileSourceFile("shaders/vertshad.vert");
-  // Creem el program
-  program = new QOpenGLShaderProgram(this);
-  // Li afegim els shaders corresponents
-  program->addShader(&fs);
-  program->addShader(&vs);
-  // Linkem el program
-  program->link();
-  // Indiquem que aquest és el program que volem usar
-  program->bind();
-
-  
-  varLoc = glGetUniformLocation (program->programId(),"val");
-  sizeLoc = glGetUniformLocation (program->programId(),"WindowSize");
-  vertexLoc = glGetAttribLocation (program->programId(), "vertex");
-  colorLoc =  glGetAttribLocation (program->programId(), "scolor");
-  transLoc = glGetUniformLocation (program->programId(), "matTG");
-  
-  
-  glm::mat4 TG(1.0); //Matriu identidat
-  TG = glm::translate (TG,glm::vec3(0.0,0.0,0.0));
-  glUniformMatrix4fv(transLoc,1,GL_FALSE,&TG[0][0]);
-  
 }

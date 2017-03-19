@@ -26,6 +26,8 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
   private:
     void createBuffers ();
     void carregaShaders ();
+    void carregaQuadrat();
+    void pinta_quadrat();
     
     // attribute locations
     GLuint vertexLoc;

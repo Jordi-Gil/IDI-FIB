@@ -26,11 +26,8 @@ void MyGLWidget::initializeGL ()
 void MyGLWidget::paintGL ()
 {
   glClear (GL_COLOR_BUFFER_BIT);  // Esborrem el frame-buffer
-
-  // Activem l'Array a pintar 
-  glBindVertexArray(VAO);
-  // Pintem l'escena
-  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+  
+  pinta_caseta();
   
   // Desactivem el VAO
   glBindVertexArray(0);
@@ -43,30 +40,12 @@ void MyGLWidget::resizeGL (int w, int h)
 
 void MyGLWidget::createBuffers ()
 {
-  glm::vec3 Vertices[5];  // Tres vèrtexs amb X, Y i Z
-  
-  Vertices[0] = glm::vec3(-1.0,-0.5,0.0);
-  Vertices[1] = glm::vec3(0.0,-0.5,0.0);
-  Vertices[2] = glm::vec3(-1.0,0.5,0.0);
-  Vertices[3] = glm::vec3(0.0,0.5,0.0);
-  Vertices[4] = glm::vec3(-0.5,1.0,0.0);
-  
-  
-  // Creació del Vertex Array Object (VAO) que usarem per pintar
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
+ 
+    carregaCaseta();
+    
+    // Desactivem el VAO
+    glBindVertexArray(0);
 
-  // Creació del buffer amb les dades dels vèrtexs
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
-  // Activem l'atribut que farem servir per vèrtex	
-  glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-  glEnableVertexAttribArray(vertexLoc);
-  
-  
-  // Desactivem el VAO
-  glBindVertexArray(0);
 }
 
 
@@ -89,4 +68,63 @@ void MyGLWidget::carregaShaders()
   program->bind();
   
   vertexLoc = glGetAttribLocation (program->programId(), "vertex");
+}
+
+/*
+        ***********************
+        *                     *
+        *    MIS FUNCIONES    *
+        *                     *
+        ***********************
+
+*/
+
+/*
+ ************************************
+ *                                  *
+ *   FUNCIONES DE CARREGA DE VAOs   *
+ *                                  *
+ ************************************
+*/
+
+void MyGLWidget::carregaCaseta()
+{
+    glm::vec3 Vertices[5];  // Tres vèrtexs amb X, Y i Z
+  
+    Vertices[0] = glm::vec3(-1.0,-0.5,0.0);
+    Vertices[1] = glm::vec3(0.0,-0.5,0.0);
+    Vertices[2] = glm::vec3(-1.0,0.5,0.0);
+    Vertices[3] = glm::vec3(0.0,0.5,0.0);
+    Vertices[4] = glm::vec3(-0.5,1.0,0.0);
+    
+    
+    // Creació del Vertex Array Object (VAO) que usarem per pintar
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    // Creació del buffer amb les dades dels vèrtexs
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
+    // Activem l'atribut que farem servir per vèrtex	
+    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(vertexLoc);
+    
+}
+
+
+/*
+ ********************************
+ *                              *
+ *   FUNCIONES DE PINTAR VAOs   *
+ *                              *
+ ********************************
+*/
+
+void MyGLWidget::pinta_caseta()
+{
+     // Activem l'Array a pintar 
+  glBindVertexArray(VAO);
+  // Pintem l'escena
+  glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
 }
