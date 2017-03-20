@@ -1,0 +1,6 @@
+Repositorio sobre las sesiones de laboratorio de IDI.
+
+Para compilar y poder ejecutar cada ejercicio:
+> qmake ( o qmake-qt si estás en un PC de la fib)
+> make
+> ./[ejecutable]
