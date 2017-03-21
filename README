@@ -1,10 +1,1 @@
-<<<<<<< HEAD
 Repositorio asignatura IDI - FIB
-=======
-Repositorio sobre las sesiones de laboratorio de IDI.
-
-Para compilar y poder ejecutar cada ejercicio:
-> qmake ( o qmake-qt si estás en un PC de la fib)
-> make
-> ./[ejecutable]
->>>>>>> fd356b145fac9d623f731b5551d0bb141f0231e7
