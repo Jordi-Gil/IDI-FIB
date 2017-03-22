@@ -23,6 +23,7 @@ void MyGLWidget::initializeGL ()
   y = glm::vec3(0,1,0);
   z = glm::vec3(0,0,1);
   
+  gir = false;
   v = glm::vec3(1/sqrt(3),1/sqrt(3),1/sqrt(3));
   
   glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
@@ -47,7 +48,7 @@ void MyGLWidget::paintGL ()
   
   glBindVertexArray (0);
   
-  gira();
+  if(gir) gira();
   
 }
 
@@ -299,6 +300,20 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
         ini_camera_3a_persona();
         break;
     }
+    
+    case Qt::Key_G: {
+        gir = !gir;
+        break;
+    }
+    
+    case Qt::Key_M: {
+        if(gir) {
+            player.setMedia(QUrl::fromLocalFile("/dades/jordi.gil.gonzalez/IDI/Bloc2/Sesion5/Brusko Problemz - Industrial Hardcore.mp3"));
+            player.play();
+        }
+        else player.stop();    
+    }
+    
     default: event->ignore(); break;
   }
   update();
@@ -324,7 +339,7 @@ void MyGLWidget::viewTransform(){
 }
  
 void MyGLWidget::ini_camera(){
-    FOV = (float)M_PI/2.0f;
+    FOV = FOVini = (float)M_PI/2.0f;
     ra = double(width())/double(height());
     znear = 0.4f;
     zfar = 3.0f;
@@ -378,8 +393,10 @@ void MyGLWidget::modelTransform2()
 void MyGLWidget::evitaDeformacions(int w, int h)
 {
     ra = double(w)/double(h);
+    if(ra < 1.0f) FOV = 2*atan(tan(FOVini/2)/ra);
     projectTransform();
 }
+
 
 /*
  *************************

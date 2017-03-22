@@ -1,5 +1,5 @@
 TEMPLATE    = app
-QT         += opengl 
+QT         += opengl multimedia multimediawidgets
 
 INCLUDEPATH +=  /usr/include/glm 
 INCLUDEPATH += ../../Model

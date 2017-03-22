@@ -23,6 +23,8 @@ void MyGLWidget::initializeGL ()
   y = glm::vec3(0,1,0);
   z = glm::vec3(0,0,1);
   
+  gir = false;
+  sound = false;
   origen = glm::vec3(0,0,0);
   
   v = glm::vec3(1/sqrt(3),1/sqrt(3),1/sqrt(3));
@@ -45,10 +47,12 @@ void MyGLWidget::paintGL ()
   modelTransform ();
   pinta_patricio();
   
-  //modelTransform2 ();
-  //pinta_floor();
+  modelTransform2 ();
+  pinta_floor();
   
   glBindVertexArray (0);
+  
+  if(gir) gira();
   
 }
 
@@ -300,6 +304,26 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
         ini_camera_3a_persona();
         break;
     }
+    
+    case Qt::Key_G: {
+        gir = !gir;
+        break;
+    }
+    
+    case Qt::Key_M: {
+        if(gir) {
+            if(!sound){
+                player.setMedia(QUrl::fromLocalFile("/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc2/Sesion5/Brusko Problemz - Industrial Hardcore.mp3"));
+                player.play();
+                sound = true;
+            }
+            else{ 
+                player.stop(); 
+                sound = false;
+            }
+        }
+        break;
+    }
     default: event->ignore(); break;
   }
   update();
@@ -326,9 +350,9 @@ void MyGLWidget::viewTransform(){
  
 void MyGLWidget::ini_camera(){
     
-    FOV = 2*asin(radiModel/d);
+    FOV = FOVini = (float)M_PI/4;
     ra = double(width())/double(height());
-    znear = radiModel;
+    znear = d - radiModel;
     zfar = d + radiModel;
     projectTransform();
     
@@ -342,15 +366,17 @@ void MyGLWidget::ini_camera(){
 void MyGLWidget::ini_camera_3a_persona()
 {
     FOV = 2*asin(radiModel/d);
+    //FOV = (float)M_PI/2.0f;
     ra = double(width())/double(height());
     znear = d - radiModel;
     zfar = d + radiModel;
     projectTransform();
     
-    VRP = centreModel;
-    OBS = VRP + d*v;
+    VRP = origen;
+    OBS = VRP + d*glm::vec3(0,0,1);
     UP = glm::vec3(0,1,0);
     viewTransform();
+    
 }
  
 /*
@@ -381,6 +407,7 @@ void MyGLWidget::modelTransform2()
 void MyGLWidget::evitaDeformacions(int w, int h)
 {
     ra = double(w)/double(h);
+    if(ra < 1.0f) FOV = 2*atan(tan(FOVini/2)/ra);
     projectTransform();
 }
 

@@ -4,6 +4,8 @@
 #include <QOpenGLShader>
 #include <QOpenGLShaderProgram>
 #include <QKeyEvent>
+#include <QMediaPlayer>
+#include <QtMultimediaWidgets>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "model.h"
@@ -69,6 +71,9 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     QOpenGLShaderProgram *program;
     
     // Internal variables
+    bool gir;
+    bool sound;
+    QMediaPlayer player;
     
     //Models
     Model homer;
@@ -78,7 +83,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     float scale;
     float degrees;
     QPoint position;
-     
+    
+    //Paràmetre inicials
+    float FOVini;
+    float raini;
+    
     //Variables Project Matrix
     float FOV;
     float ra;
