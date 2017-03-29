@@ -10,6 +10,7 @@ uniform mat4 VM;
 out vec3 fcolor;
 
 void main()  {
+    
     fcolor = color;
     gl_Position = PM * VM * TG * vec4 (vertex, 1.0);
 }

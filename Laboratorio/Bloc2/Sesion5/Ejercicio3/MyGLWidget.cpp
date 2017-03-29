@@ -230,9 +230,10 @@ void MyGLWidget::calculaVertexMaxMin()
         Modelminim.z = std::min(Modelminim.z,(float) homer.vertices()[i+2]);
         Modelmaxim.z = std::max(Modelmaxim.z,(float) homer.vertices()[i+2]);
         
-        calculaCentreModel();
-        
     }
+    
+    calculaCentreModel();
+    
 }
 
 void MyGLWidget::calculaCentreModel()
@@ -340,14 +341,14 @@ void MyGLWidget::viewTransform(){
  
 void MyGLWidget::ini_camera(){
     
-    FOV = FOVini = (float)M_PI/2.0f;
+    FOV = FOVini = asin(radiModel/d);
     ra = double(width())/double(height());
     znear = d - radiModel;
     zfar = d + radiModel;
     projectTransform();
     
-    OBS = glm::vec3(0,0,1);
     VRP = glm::vec3(0,0,0);
+    OBS = VRP + d*glm::vec3(0,0,1);
     UP = glm::vec3(0,1,0);
     viewTransform();
 }
@@ -361,7 +362,7 @@ void MyGLWidget::ini_camera_3a_persona()
     zfar = d + radiModel;
     projectTransform();
     
-    VRP = centreModel;
+    VRP = glm::vec3(0,0,0);
     OBS = VRP + d*v;
     UP = glm::vec3(0,1,0);
     viewTransform();

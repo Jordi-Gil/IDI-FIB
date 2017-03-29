@@ -285,7 +285,7 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
         {
             if(primera) degreesX +=0.1;
             else if(tercera){
-                thita += (float)M_PI/2;
+                thita += (float)M_PI/40;
                 viewTransform();
             }
             
@@ -294,21 +294,21 @@ void MyGLWidget::mouseMoveEvent(QMouseEvent *e)
             
             if(primera) degreesX -=0.1;
             else if(tercera){
-                thita -= (float)M_PI/2;
+                thita -= (float)M_PI/40;
                 viewTransform();
             }
         }
         if(e->y() > position.y()){
             if(primera) degreesY += 0.1;
             else if(tercera){
-                psi += (float)M_PI/2;
+                psi += (float)M_PI/40;
                 viewTransform();
             }
         }
         else{
             if(primera) degreesY -= 0.1;
             else if(tercera){ 
-                psi -= (float)M_PI/2;
+                psi -= (float)M_PI/40;
                 viewTransform();
             }
         }
