@@ -1,0 +1,63 @@
+# Blender MTL File: mesada.blend
+# Material Count: 6
+newmtl sodawhite
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.73098 0.73098 0.73098
+Ks 0.04902 0.04902 0.04902
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl sodasilver
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.652549 0.652549 0.652549
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl sodagreen
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.247843 0.376471 0.276078
+Ks 0.131373 0.2 0.145098
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl sodared
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.470588 0.153725 0.131765
+Ks 0.3 0.1 0.082353
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl sodaglass
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.012549 0.025098 0.203922
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 0.75
+illum 2
+
+
+newmtl sodacement
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.558431 0.558431 0.558431
+Ks 0.029412 0.029412 0.029412
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+

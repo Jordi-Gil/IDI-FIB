@@ -282,10 +282,10 @@ void MyGLWidget::calculaCentreModel()
 
     radiModel = sqrt(auxX + auxY + auxZ);
 
-    left = -radiModel;
-    right = radiModel;
-    bottom = -radiModel;
-    top = radiModel;
+    left = laux = -radiModel;
+    right = raux = radiModel;
+    bottom = baux = -radiModel;
+    top = taux = radiModel;
 
     d = 2*radiModel;
 }
@@ -302,24 +302,24 @@ void MyGLWidget::wheelEvent (QWheelEvent * e)
 {
     makeCurrent();
     if(ortogonal){
-      cerr << "Sin implementar" << endl;
-      /*
+      //cerr << "Sin implementar" << endl;
+      
       if(e->delta() > 0.f){
 
-          left += 10*one_degree;
-          right -= 10*one_degree;
-          bottom += 10*one_degree;
-          top -= 10*one_degree;
+          laux += radiModel/100;
+          raux -= radiModel/100;
+          baux += radiModel/100;
+          taux -= radiModel/100;
 
       }
       else
       {
-        left -= 10*one_degree;
-        right += 10*one_degree;
-        bottom -= 10*one_degree;
-        top += 10*one_degree;
+        raux += radiModel/100;
+        laux -= radiModel/100;
+        baux -= radiModel/100;
+        taux += radiModel/100;
       }
-*/
+      resizeOrto();
     }
     else{
 
@@ -572,23 +572,26 @@ void MyGLWidget::evitaDeformacions(int w, int h)
     ra = double(w)/double(h);
     if(ra < 1.0f) FOV = 2*atan(tan(FOVini/2)/ra);
 
-    if(ortogonal){
-        if(ra > 1.0){
-          left = -radiModel * ra;
-          right = radiModel * ra;
-          bottom = -radiModel;
-          top = radiModel;
-        }
-        if(ra < 1.0){
-          left = -radiModel;
-          right = radiModel;
-          top = radiModel/ra;
-          bottom = -radiModel/ra;
-        }
-        projectTransformOrtogonal();
-    }
+    if(ortogonal) resizeOrto();
     else projectTransformPerspectiva();
 
+}
+
+void MyGLWidget::resizeOrto()
+{
+    if(ra > 1.0){
+        left = laux * ra;
+        right = raux * ra;
+        bottom = baux;
+        top = taux;
+    }
+    if(ra < 1.0){
+        left = laux;
+        right = raux;
+        top = taux/ra;
+        bottom = baux/ra;
+    }
+    projectTransformOrtogonal();
 }
 
 /*

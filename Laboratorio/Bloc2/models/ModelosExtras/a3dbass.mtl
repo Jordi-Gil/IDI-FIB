@@ -1,0 +1,134 @@
+# Blender MTL File: mesada.blend
+# Material Count: 12
+newmtl brbss01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.627451 0.627451 0.627451
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl tbss01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.431373 0.431373 0.431373
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl tnb01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl bnk01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.467451 0.467451 0.467451
+Ks 0.407843 0.407843 0.407843
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl tnk01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.339216 0.339216 0.339216
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl tblt01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.413725 0.413725 0.413725
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl ttn01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.423529 0.423529 0.423529
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl btn01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.398039 0.398039 0.398039
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl string01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.395294 0.395294 0.395294
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl bbss01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.427451 0.427451 0.427451
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl ubss01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.309804 0.309804 0.309804
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl pbss01_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.398431 0.398431 0.398431
+Ks 0.447059 0.447059 0.447059
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+

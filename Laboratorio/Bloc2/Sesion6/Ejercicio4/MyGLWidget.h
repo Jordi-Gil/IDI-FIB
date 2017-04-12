@@ -54,6 +54,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void calculaVertexMaxMin();
     void calculaCentreModel();
     void ini_camera_3a_persona();
+    void resizeOrto();
     
     // attribute locations
     GLuint vertexLoc;
@@ -109,6 +110,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     float right;
     float bottom;
     float top;
+    
+    float laux;
+    float raux;
+    float baux;
+    float taux;
     
     //Variables View Matrix
     float thita;

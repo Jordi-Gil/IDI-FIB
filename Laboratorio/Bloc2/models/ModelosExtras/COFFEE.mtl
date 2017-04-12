@@ -1,0 +1,42 @@
+# Blender MTL File: mesada.blend
+# Material Count: 4
+newmtl GLASS
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.323137 0.323137 0.323137
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 0.07
+illum 2
+
+
+newmtl METAL
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.671373 0.671373 0.671373
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl BLACK_MATTE
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.053333 0.053333 0.053333
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl WHITE_PLSTC
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.752941 0.752941 0.752941
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+
