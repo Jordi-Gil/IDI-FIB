@@ -1,0 +1,45 @@
+# Blender MTL File: mesada.blend
+# Material Count: 4
+newmtl watchsilver1_(su
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.618039 0.599216 0.583529
+Ks 0.5 0.484314 0.470588
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl watchgold1_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.574118 0.517647 0.247843
+Ks 0.5 0.44902 0.215686
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl watchband_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.19451 0.19451 0.19451
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+
+newmtl watchface_(sub)
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.558431 0.558431 0.558431
+Ks 0.44902 0.44902 0.44902
+Ni 1.0
+d 1.0
+illum 2
+map_Kd Untitled
+
+

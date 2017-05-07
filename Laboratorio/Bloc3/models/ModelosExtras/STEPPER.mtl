@@ -1,0 +1,22 @@
+# Blender MTL File: mesada.blend
+# Material Count: 2
+newmtl BEIGE_PLSTC
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.608627 0.533333 0.404706
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl BLACK_MATTE
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.053333 0.053333 0.053333
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+

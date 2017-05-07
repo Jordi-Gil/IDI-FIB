@@ -42,6 +42,7 @@ void MyGLWidget::initializeGL ()
   red = green = blue = 1.0;
 
   model = "Patricio";
+  index = 1;
 
   origen = glm::vec3(0,0,0);
 
@@ -80,45 +81,52 @@ void MyGLWidget::paintGL ()
     // Carreguem la transformació de model
     if(model == "Patricio"){
         modelTransformPat1 ();
-        pinta_patricio();
+        pinta_model();
 
         modelTransformPat2();
-        pinta_patricio();
+        pinta_model();
     }
     else if(model == "Homer"){
         modelTransformHomer1();
-        pinta_homer();
+        pinta_model();
 
         modelTransformHomer2();
-        pinta_homer();
+        pinta_model();
     }
     else if(model == "Legoman"){
         modelTransformLego1();
-        pinta_legoman();
+        pinta_model();
 
         modelTransformLego2();
-        pinta_legoman();
+        pinta_model();
     }
     else if(model == "Vaca"){
         modelTransformVaca1();
-        pinta_vaca();
+        pinta_model();
 
         modelTransformVaca2();
-        pinta_vaca();
+        pinta_model();
+    }
+    else if(model == "Delfin"){
+        modelTransformDelfin1();
+        pinta_model();
+
+        modelTransformDelfin2();
+        pinta_model();
     }
     else if(model == "F16"){
         modelTransformF161();
-        pinta_f16();
+        pinta_model();
 
         modelTransformF162();
-        pinta_f16();
+        pinta_model();
     }
     else if(model == "Porsche"){
         modelTransformPorsche1();
-        pinta_porsche();
+        pinta_model();
 
         modelTransformPorsche2();
-        pinta_porsche();
+        pinta_model();
     }
 
     modelTransformFloor ();
@@ -139,18 +147,14 @@ void MyGLWidget::resizeGL (int w, int h)
 void MyGLWidget::createBuffers ()
 {
 
-    carregaModelPatricio();
-    carregaModelHomer();
-    carregaModelLegoman();
-    carregaModelVaca();
-    carregaModelF16();
-    carregaModelPorsche();
+    carregaModels();
     carregaFloor();
 
     calculaCapsaPatricio();
     calculaCapsaHomer();
     calculaCapsaLegoman();
     calculaCapsaVaca();
+    calculaCapsaDelfin();
     calculaCapsaF16();
     calculaCapsaPorsche();
 
@@ -186,7 +190,7 @@ void MyGLWidget::carregaShaders()
   // Obtenim identificador per a l'atribut “vertex” del vertex shader
   vertexLoc = glGetAttribLocation (program->programId(), "vertex");
   // Obtenim identificador per a l'atribut “color” del vertex shader
-  colorLoc = glGetAttribLocation (program->programId(), "color");
+  matdiffLoc = glGetAttribLocation (program->programId(), "color");
   // Uniform locations
   transLoc = glGetUniformLocation(program->programId(), "TG");
   projLoc = glGetUniformLocation(program->programId(), "PM");
@@ -210,165 +214,41 @@ void MyGLWidget::carregaShaders()
  ************************************
 */
 
-//Carrega el Patricio
-void MyGLWidget::carregaModelPatricio(){
+
+void MyGLWidget::carregaModels(){
+
 
     //carrega el model
-    patricio.load("../../models/Patricio.obj");
+    models[0].load("../../models/Patricio.obj");
+    models[1].load("../../models/homer.obj");
+    models[2].load("../../models/legoman.obj");
+    models[3].load("../../models/cow.obj");
+    models[4].load("../../models/dolphin.obj");
+    models[5].load("../../models/f-16.obj");
+    models[6].load("../../models/porsche.obj");
+
+     for(int i = 1; i < 8; ++i){
     // Creació del Vertex Array Object per pintar
-    glGenVertexArrays(1, &VAO_Patricio);
-    glBindVertexArray(VAO_Patricio);
+        glGenVertexArrays(1, &Vs[i][0]);
+        glBindVertexArray(Vs[i][0]);
 
-    glGenBuffers(1, &VBO_PatricioPos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_PatricioPos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*patricio.faces().size()*3*3, patricio.VBO_vertices(), GL_STATIC_DRAW);
+        glGenBuffers(1, &Vs[i][1]);
+        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][1]);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i-1].faces().size()*3*3, models[i-1].VBO_vertices(), GL_STATIC_DRAW);
 
-    // Activem l'atribut vertexLoc
-    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(vertexLoc);
+        // Activem l'atribut vertexLoc
+        glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(vertexLoc);
 
-    glGenBuffers(1, &VBO_PatricioCol);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_PatricioCol);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*patricio.faces().size()*3*3, patricio.VBO_matdiff(), GL_STATIC_DRAW);
+        glGenBuffers(1, &Vs[i][2]);
+        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][2]);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i-1].faces().size()*3*3, models[i-1].VBO_matdiff(), GL_STATIC_DRAW);
 
-    // Activem l'atribut colorLoc
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
+        // Activem l'atribut matdiffLoc
+        glVertexAttribPointer(matdiffLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+        glEnableVertexAttribArray(matdiffLoc);
+    }
 
-}
-
-//Carrega el Homer
-void MyGLWidget::carregaModelHomer(){
-
-    //carrega el model
-    homer.load("../../models/homer.obj");
-    // Creació del Vertex Array Object per pintar
-    glGenVertexArrays(1, &VAO_Homer);
-    glBindVertexArray(VAO_Homer);
-
-    glGenBuffers(1, &VBO_HomerPos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_HomerPos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*homer.faces().size()*3*3, homer.VBO_vertices(), GL_STATIC_DRAW);
-
-    // Activem l'atribut vertexLoc
-    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(vertexLoc);
-
-    glGenBuffers(1, &VBO_HomerCol);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_HomerCol);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*homer.faces().size()*3*3, homer.VBO_matdiff(), GL_STATIC_DRAW);
-
-    // Activem l'atribut colorLoc
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
-
-}
-
-//Carrega el Legoman
-void MyGLWidget::carregaModelLegoman(){
-
-    //carrega el model
-    legoman.load("../../models/legoman.obj");
-    // Creació del Vertex Array Object per pintar
-    glGenVertexArrays(1, &VAO_Legoman);
-    glBindVertexArray(VAO_Legoman);
-
-    glGenBuffers(1, &VBO_LegomanPos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_LegomanPos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*legoman.faces().size()*3*3, legoman.VBO_vertices(), GL_STATIC_DRAW);
-
-    // Activem l'atribut vertexLoc
-    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(vertexLoc);
-
-    glGenBuffers(1, &VBO_LegomanCol);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_LegomanCol);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*legoman.faces().size()*3*3, legoman.VBO_matdiff(), GL_STATIC_DRAW);
-
-    // Activem l'atribut colorLoc
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
-
-}
-
-//Carrega la Vaca
-void MyGLWidget::carregaModelVaca(){
-
-    //carrega el model
-    vaca.load("../../models/cow.obj");
-    // Creació del Vertex Array Object per pintar
-    glGenVertexArrays(1, &VAO_Vaca);
-    glBindVertexArray(VAO_Vaca);
-
-    glGenBuffers(1, &VBO_VacaPos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_VacaPos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vaca.faces().size()*3*3, vaca.VBO_vertices(), GL_STATIC_DRAW);
-
-    // Activem l'atribut vertexLoc
-    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(vertexLoc);
-
-    glGenBuffers(1, &VBO_VacaCol);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_VacaCol);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vaca.faces().size()*3*3, vaca.VBO_matdiff(), GL_STATIC_DRAW);
-
-    // Activem l'atribut colorLoc
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
-
-}
-
-//Carrega el F16
-void MyGLWidget::carregaModelF16(){
-
-    //carrega el model
-    f16.load("../../models/f-16.obj");
-    // Creació del Vertex Array Object per pintar
-    glGenVertexArrays(1, &VAO_F16);
-    glBindVertexArray(VAO_F16);
-
-    glGenBuffers(1, &VBO_F16Pos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_F16Pos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*f16.faces().size()*3*3, f16.VBO_vertices(), GL_STATIC_DRAW);
-
-    // Activem l'atribut vertexLoc
-    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(vertexLoc);
-
-    glGenBuffers(1, &VBO_F16Col);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_F16Col);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*f16.faces().size()*3*3, f16.VBO_matdiff(), GL_STATIC_DRAW);
-
-    // Activem l'atribut colorLoc
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
-
-}
-
-//Carrega el Porsche
-void MyGLWidget::carregaModelPorsche(){
-
-    //carrega el model
-    porsche.load("../../models/porsche.obj");
-    // Creació del Vertex Array Object per pintar
-    glGenVertexArrays(1, &VAO_Porsche);
-    glBindVertexArray(VAO_Porsche);
-
-    glGenBuffers(1, &VBO_PorschePos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_PorschePos);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*porsche.faces().size()*3*3, porsche.VBO_vertices(), GL_STATIC_DRAW);
-
-    // Activem l'atribut vertexLoc
-    glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(vertexLoc);
-
-    glGenBuffers(1, &VBO_PorscheCol);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_PorscheCol);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*porsche.faces().size()*3*3, porsche.VBO_matdiff(), GL_STATIC_DRAW);
-
-    // Activem l'atribut colorLoc
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
 
 }
 
@@ -389,23 +269,23 @@ void MyGLWidget::carregaFloor(){
     Colors[3] = glm::vec3(red,green,blue);
 
     //Creació del Vertex Array Object
-    glGenVertexArrays(1, &VAO_Floor);
-    glBindVertexArray(VAO_Floor);
+    glGenVertexArrays(1, &Vs[0][0]);
+    glBindVertexArray(Vs[0][0]);
 
-    glGenBuffers(1,&VBO_FloorPos);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_FloorPos);
+    glGenBuffers(1,&Vs[0][1]);
+    glBindBuffer(GL_ARRAY_BUFFER, Vs[0][1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices,GL_STATIC_DRAW);
 
     //Activem l'atribut vertexLoc
     glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(vertexLoc);
 
-    glGenBuffers(1, &VBO_FloorCol);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_FloorCol);
+    glGenBuffers(1, &Vs[0][2]);
+    glBindBuffer(GL_ARRAY_BUFFER, Vs[0][2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glEnableVertexAttribArray(colorLoc);
+    glVertexAttribPointer(matdiffLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(matdiffLoc);
 
 }
 
@@ -417,62 +297,18 @@ void MyGLWidget::carregaFloor(){
  ********************************
 */
 
-void MyGLWidget::pinta_patricio()
+void MyGLWidget::pinta_model()
 {
     // Activem el VAO per a pintar el homer
-  glBindVertexArray (VAO_Patricio);
+  glBindVertexArray (Vs[index][0]);
   // pintem
-  glDrawArrays(GL_TRIANGLES, 0, patricio.faces().size()*3);
-}
-
-void MyGLWidget::pinta_homer()
-{
-    // Activem el VAO per a pintar el homer
-  glBindVertexArray (VAO_Homer);
-  // pintem
-  glDrawArrays(GL_TRIANGLES, 0, homer.faces().size()*3);
-}
-
-void MyGLWidget::pinta_legoman()
-{
-    // Activem el VAO per a pintar el homer
-    glBindVertexArray (VAO_Legoman);
-
-    // pintem
-    glDrawArrays(GL_TRIANGLES, 0, legoman.faces().size()*3);
-}
-
-void MyGLWidget::pinta_vaca()
-{
-    // Activem el VAO per a pintar el homer
-    glBindVertexArray (VAO_Vaca);
-
-    // pintem
-    glDrawArrays(GL_TRIANGLES, 0, vaca.faces().size()*3);
-}
-
-void MyGLWidget::pinta_f16()
-{
-    // Activem el VAO per a pintar el homer
-    glBindVertexArray (VAO_F16);
-
-    // pintem
-    glDrawArrays(GL_TRIANGLES, 0, f16.faces().size()*3);
-}
-
-void MyGLWidget::pinta_porsche()
-{
-    // Activem el VAO per a pintar el homer
-    glBindVertexArray (VAO_Porsche);
-
-    // pintem
-    glDrawArrays(GL_TRIANGLES, 0, porsche.faces().size()*3);
+  glDrawArrays(GL_TRIANGLES, 0, models[index-1].faces().size()*3);
 }
 
 void MyGLWidget::pinta_floor()
 {
     // Activem el VAO per a pintar el floor
-  glBindVertexArray(VAO_Floor);
+  glBindVertexArray(Vs[0][0]);
 
   //pintem
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -489,38 +325,28 @@ void MyGLWidget::pinta_floor()
 //Patricio
 void MyGLWidget::calculaCapsaPatricio()
 {
-    EsferaMinimaPat.x = EsferaMaximaPat.x = patricio.vertices()[0];
-    EsferaMinimaPat.y = EsferaMaximaPat.y = patricio.vertices()[1];
-    EsferaMinimaPat.z = EsferaMaximaPat.z = patricio.vertices()[2];
+    EsferaMinimaPat.x = EsferaMaximaPat.x = models[0].vertices()[0];
+    EsferaMinimaPat.y = EsferaMaximaPat.y = models[0].vertices()[1];
+    EsferaMinimaPat.z = EsferaMaximaPat.z = models[0].vertices()[2];
 
-    for(unsigned int i = 3; i < patricio.vertices().size(); i+=3){
+    for(unsigned int i = 3; i < models[0].vertices().size(); i+=3){
         //Comprovamos la componente 'x'
-        EsferaMinimaPat.x = std::min(EsferaMinimaPat.x,(float) patricio.vertices()[i]);
-        EsferaMaximaPat.x = std::max(EsferaMaximaPat.x,(float) patricio.vertices()[i]);
+        EsferaMinimaPat.x = std::min(EsferaMinimaPat.x,(float) models[0].vertices()[i]);
+        EsferaMaximaPat.x = std::max(EsferaMaximaPat.x,(float) models[0].vertices()[i]);
 
         //Comprovamos la componente 'y'
-        EsferaMinimaPat.y = std::min(EsferaMinimaPat.y,(float) patricio.vertices()[i+1]);
-        EsferaMaximaPat.y = std::max(EsferaMaximaPat.y,(float) patricio.vertices()[i+1]);
+        EsferaMinimaPat.y = std::min(EsferaMinimaPat.y,(float) models[0].vertices()[i+1]);
+        EsferaMaximaPat.y = std::max(EsferaMaximaPat.y,(float) models[0].vertices()[i+1]);
 
         //Comprovamos la componente 'z'
-        EsferaMinimaPat.z = std::min(EsferaMinimaPat.z,(float) patricio.vertices()[i+2]);
-        EsferaMaximaPat.z = std::max(EsferaMaximaPat.z,(float) patricio.vertices()[i+2]);
+        EsferaMinimaPat.z = std::min(EsferaMinimaPat.z,(float) models[0].vertices()[i+2]);
+        EsferaMaximaPat.z = std::max(EsferaMaximaPat.z,(float) models[0].vertices()[i+2]);
 
     }
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del patricio
     scalePat1 = 2/(EsferaMaximaPat.y - EsferaMinimaPat.y);
     CBMPat = glm::vec3((EsferaMaximaPat.x + EsferaMinimaPat.x)/2, EsferaMinimaPat.y, (EsferaMaximaPat.z + EsferaMinimaPat.z)/2 );
 
-    for(int i = 0; i < 4; ++i){
-        EsferaMinimaPat.x = std::min(EsferaMinimaPat.x, Vertices[i].x);
-        EsferaMaximaPat.x = std::max(EsferaMaximaPat.x, Vertices[i].x);
-
-        EsferaMinimaPat.y = std::min(EsferaMinimaPat.y, Vertices[i].y);
-        EsferaMaximaPat.y = std::max(EsferaMaximaPat.y, Vertices[i].y);
-
-        EsferaMinimaPat.z = std::min(EsferaMinimaPat.z, Vertices[i].z);
-        EsferaMaximaPat.z = std::max(EsferaMaximaPat.z, Vertices[i].z);
-    }
 
     calculaCentreModelPat();
 
@@ -542,38 +368,27 @@ void MyGLWidget::calculaCentreModelPat()
 //Homer
 void MyGLWidget::calculaCapsaHomer()
 {
-    EsferaMinimaHomer.x = EsferaMaximaHomer.x = homer.vertices()[0];
-    EsferaMinimaHomer.y = EsferaMaximaHomer.y = homer.vertices()[1];
-    EsferaMinimaHomer.z = EsferaMaximaHomer.z = homer.vertices()[2];
+    EsferaMinimaHomer.x = EsferaMaximaHomer.x = models[1].vertices()[0];
+    EsferaMinimaHomer.y = EsferaMaximaHomer.y = models[1].vertices()[1];
+    EsferaMinimaHomer.z = EsferaMaximaHomer.z = models[1].vertices()[2];
 
-    for(unsigned int i = 3; i < homer.vertices().size(); i+=3){
+    for(unsigned int i = 3; i < models[1].vertices().size(); i+=3){
         //Comprovamos la componente 'x'
-        EsferaMinimaHomer.x = std::min(EsferaMinimaHomer.x,(float) homer.vertices()[i]);
-        EsferaMaximaHomer.x = std::max(EsferaMaximaHomer.x,(float) homer.vertices()[i]);
+        EsferaMinimaHomer.x = std::min(EsferaMinimaHomer.x,(float) models[1].vertices()[i]);
+        EsferaMaximaHomer.x = std::max(EsferaMaximaHomer.x,(float) models[1].vertices()[i]);
 
         //Comprovamos la componente 'y'
-        EsferaMinimaHomer.y = std::min(EsferaMinimaHomer.y,(float) homer.vertices()[i+1]);
-        EsferaMaximaHomer.y = std::max(EsferaMaximaHomer.y,(float) homer.vertices()[i+1]);
+        EsferaMinimaHomer.y = std::min(EsferaMinimaHomer.y,(float) models[1].vertices()[i+1]);
+        EsferaMaximaHomer.y = std::max(EsferaMaximaHomer.y,(float) models[1].vertices()[i+1]);
 
         //Comprovamos la componente 'z'
-        EsferaMinimaHomer.z = std::min(EsferaMinimaHomer.z,(float) homer.vertices()[i+2]);
-        EsferaMaximaHomer.z = std::max(EsferaMaximaHomer.z,(float) homer.vertices()[i+2]);
+        EsferaMinimaHomer.z = std::min(EsferaMinimaHomer.z,(float) models[1].vertices()[i+2]);
+        EsferaMaximaHomer.z = std::max(EsferaMaximaHomer.z,(float) models[1].vertices()[i+2]);
 
     }
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del homer
     scaleHomer = 2/(EsferaMaximaHomer.y - EsferaMinimaHomer.y);
     CBMHomer = glm::vec3((EsferaMaximaHomer.x + EsferaMinimaHomer.x)/2, EsferaMinimaHomer.y, (EsferaMaximaHomer.z + EsferaMinimaHomer.z)/2 );
-
-    for(int i = 0; i < 4; ++i){
-        EsferaMinimaHomer.x = std::min(EsferaMinimaHomer.x, Vertices[i].x);
-        EsferaMaximaHomer.x = std::max(EsferaMaximaHomer.x, Vertices[i].x);
-
-        EsferaMinimaHomer.y = std::min(EsferaMinimaHomer.y, Vertices[i].y);
-        EsferaMaximaHomer.y = std::max(EsferaMaximaHomer.y, Vertices[i].y);
-
-        EsferaMinimaHomer.z = std::min(EsferaMinimaHomer.z, Vertices[i].z);
-        EsferaMaximaHomer.z = std::max(EsferaMaximaHomer.z, Vertices[i].z);
-    }
 
     calculaCentreModelHomer();
 
@@ -596,40 +411,29 @@ void MyGLWidget::calculaCentreModelHomer()
 void MyGLWidget::calculaCapsaLegoman()
 {
 
-    EsferaMinimaLego.x = EsferaMaximaLego.x = legoman.vertices()[0];
-    EsferaMinimaLego.y = EsferaMaximaLego.y = legoman.vertices()[1];
-    EsferaMinimaLego.z = EsferaMaximaLego.z = legoman.vertices()[2];
+    EsferaMinimaLego.x = EsferaMaximaLego.x = models[2].vertices()[0];
+    EsferaMinimaLego.y = EsferaMaximaLego.y = models[2].vertices()[1];
+    EsferaMinimaLego.z = EsferaMaximaLego.z = models[2].vertices()[2];
 
 
-    for(unsigned int i = 3; i < legoman.vertices().size(); i+=3){
+    for(unsigned int i = 3; i < models[2].vertices().size(); i+=3){
         //Comprovamos la componente 'x'
-        EsferaMinimaLego.x = std::min(EsferaMinimaLego.x,(float) legoman.vertices()[i]);
-        EsferaMaximaLego.x = std::max(EsferaMaximaLego.x,(float) legoman.vertices()[i]);
+        EsferaMinimaLego.x = std::min(EsferaMinimaLego.x,(float) models[2].vertices()[i]);
+        EsferaMaximaLego.x = std::max(EsferaMaximaLego.x,(float) models[2].vertices()[i]);
 
         //Comprovamos la componente 'y'
-        EsferaMinimaLego.y = std::min(EsferaMinimaLego.y,(float) legoman.vertices()[i+1]);
-        EsferaMaximaLego.y = std::max(EsferaMaximaLego.y,(float) legoman.vertices()[i+1]);
+        EsferaMinimaLego.y = std::min(EsferaMinimaLego.y,(float) models[2].vertices()[i+1]);
+        EsferaMaximaLego.y = std::max(EsferaMaximaLego.y,(float) models[2].vertices()[i+1]);
 
         //Comprovamos la componente 'z'
-        EsferaMinimaLego.z = std::min(EsferaMinimaLego.z,(float) legoman.vertices()[i+2]);
-        EsferaMaximaLego.z = std::max(EsferaMaximaLego.z,(float) legoman.vertices()[i+2]);
+        EsferaMinimaLego.z = std::min(EsferaMinimaLego.z,(float) models[2].vertices()[i+2]);
+        EsferaMaximaLego.z = std::max(EsferaMaximaLego.z,(float) models[2].vertices()[i+2]);
 
     }
 
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del legomans
     scaleLego = 2/(EsferaMaximaLego.y - EsferaMinimaLego.y);
     CBMLego = glm::vec3((EsferaMaximaLego.x + EsferaMinimaLego.x)/2, EsferaMinimaLego.y, (EsferaMaximaLego.z + EsferaMinimaLego.z)/2 );
-
-    for(int i = 0; i < 4; ++i){
-        EsferaMinimaLego.x = std::min(EsferaMinimaLego.x, Vertices[i].x);
-        EsferaMaximaLego.x = std::max(EsferaMaximaLego.x, Vertices[i].x);
-
-        EsferaMinimaLego.y = std::min(EsferaMinimaLego.y, Vertices[i].y);
-        EsferaMaximaLego.y = std::max(EsferaMaximaLego.y, Vertices[i].y);
-
-        EsferaMinimaLego.z = std::min(EsferaMinimaLego.z, Vertices[i].z);
-        EsferaMaximaLego.z = std::max(EsferaMaximaLego.z, Vertices[i].z);
-    }
 
     calculaCentreModelLego();
 
@@ -652,40 +456,29 @@ void MyGLWidget::calculaCentreModelLego()
 void MyGLWidget::calculaCapsaVaca()
 {
 
-    EsferaMinimaVaca.x = EsferaMaximaVaca.x = vaca.vertices()[0];
-    EsferaMinimaVaca.y = EsferaMaximaVaca.y = vaca.vertices()[1];
-    EsferaMinimaVaca.z = EsferaMaximaVaca.z = vaca.vertices()[2];
+    EsferaMinimaVaca.x = EsferaMaximaVaca.x = models[3].vertices()[0];
+    EsferaMinimaVaca.y = EsferaMaximaVaca.y = models[3].vertices()[1];
+    EsferaMinimaVaca.z = EsferaMaximaVaca.z = models[3].vertices()[2];
 
 
-    for(unsigned int i = 3; i < vaca.vertices().size(); i+=3){
+    for(unsigned int i = 3; i < models[3].vertices().size(); i+=3){
         //Comprovamos la componente 'x'
-        EsferaMinimaVaca.x = std::min(EsferaMinimaVaca.x,(float) vaca.vertices()[i]);
-        EsferaMaximaVaca.x = std::max(EsferaMaximaVaca.x,(float) vaca.vertices()[i]);
+        EsferaMinimaVaca.x = std::min(EsferaMinimaVaca.x,(float) models[3].vertices()[i]);
+        EsferaMaximaVaca.x = std::max(EsferaMaximaVaca.x,(float) models[3].vertices()[i]);
 
         //Comprovamos la componente 'y'
-        EsferaMinimaVaca.y = std::min(EsferaMinimaVaca.y,(float) vaca.vertices()[i+1]);
-        EsferaMaximaVaca.y = std::max(EsferaMaximaVaca.y,(float) vaca.vertices()[i+1]);
+        EsferaMinimaVaca.y = std::min(EsferaMinimaVaca.y,(float) models[3].vertices()[i+1]);
+        EsferaMaximaVaca.y = std::max(EsferaMaximaVaca.y,(float) models[3].vertices()[i+1]);
 
         //Comprovamos la componente 'z'
-        EsferaMinimaVaca.z = std::min(EsferaMinimaVaca.z,(float) vaca.vertices()[i+2]);
-        EsferaMaximaVaca.z = std::max(EsferaMaximaVaca.z,(float) vaca.vertices()[i+2]);
+        EsferaMinimaVaca.z = std::min(EsferaMinimaVaca.z,(float) models[3].vertices()[i+2]);
+        EsferaMaximaVaca.z = std::max(EsferaMaximaVaca.z,(float) models[3].vertices()[i+2]);
 
     }
 
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del vacas
     scaleVaca = 2/(EsferaMaximaVaca.y - EsferaMinimaVaca.y);
     CBMVaca = glm::vec3((EsferaMaximaVaca.x + EsferaMinimaVaca.x)/2, EsferaMinimaVaca.y, (EsferaMaximaVaca.z + EsferaMinimaVaca.z)/2 );
-
-    for(int i = 0; i < 4; ++i){
-        EsferaMinimaVaca.x = std::min(EsferaMinimaVaca.x, Vertices[i].x);
-        EsferaMaximaVaca.x = std::max(EsferaMaximaVaca.x, Vertices[i].x);
-
-        EsferaMinimaVaca.y = std::min(EsferaMinimaVaca.y, Vertices[i].y);
-        EsferaMaximaVaca.y = std::max(EsferaMaximaVaca.y, Vertices[i].y);
-
-        EsferaMinimaVaca.z = std::min(EsferaMinimaVaca.z, Vertices[i].z);
-        EsferaMaximaVaca.z = std::max(EsferaMaximaVaca.z, Vertices[i].z);
-    }
 
     calculaCentreModelVaca();
 
@@ -704,44 +497,76 @@ void MyGLWidget::calculaCentreModelVaca()
 
 }
 
+void MyGLWidget::calculaCapsaDelfin()
+{
+
+    EsferaMinimaDelfin.x = EsferaMaximaDelfin.x = models[4].vertices()[0];
+    EsferaMinimaDelfin.y = EsferaMaximaDelfin.y = models[4].vertices()[1];
+    EsferaMinimaDelfin.z = EsferaMaximaDelfin.z = models[4].vertices()[2];
+
+
+    for(unsigned int i = 3; i < models[4].vertices().size(); i+=3){
+        //Comprovamos la componente 'x'
+        EsferaMinimaDelfin.x = std::min(EsferaMinimaDelfin.x,(float) models[4].vertices()[i]);
+        EsferaMaximaDelfin.x = std::max(EsferaMaximaDelfin.x,(float) models[4].vertices()[i]);
+
+        //Comprovamos la componente 'y'
+        EsferaMinimaDelfin.y = std::min(EsferaMinimaDelfin.y,(float) models[4].vertices()[i+1]);
+        EsferaMaximaDelfin.y = std::max(EsferaMaximaDelfin.y,(float) models[4].vertices()[i+1]);
+
+        //Comprovamos la componente 'z'
+        EsferaMinimaDelfin.z = std::min(EsferaMinimaDelfin.z,(float) models[4].vertices()[i+2]);
+        EsferaMaximaDelfin.z = std::max(EsferaMaximaDelfin.z,(float) models[4].vertices()[i+2]);
+
+    }
+
+    //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del vacas
+    scaleDelfin = 2/(EsferaMaximaDelfin.y - EsferaMinimaDelfin.y);
+    CBMDelfin = glm::vec3((EsferaMaximaDelfin.x + EsferaMinimaDelfin.x)/2, EsferaMinimaDelfin.y, (EsferaMaximaDelfin.z + EsferaMinimaDelfin.z)/2 );
+
+    calculaCentreModelDelfin();
+}
+
+void MyGLWidget::calculaCentreModelDelfin()
+{
+    centreModelDelfin = glm::vec3((EsferaMaximaDelfin.x + EsferaMinimaDelfin.x)/2, (EsferaMaximaDelfin.y + EsferaMinimaDelfin.y)/2, (EsferaMaximaDelfin.z + EsferaMinimaDelfin.z)/2 );
+
+    // r = √((x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1)^2)/2
+    float auxX = pow((EsferaMaximaDelfin.x - EsferaMinimaDelfin.x),2);
+    float auxY = pow((EsferaMaximaDelfin.y - EsferaMinimaDelfin.y),2);
+    float auxZ = pow((EsferaMaximaDelfin.z - EsferaMinimaDelfin.z),2);
+
+    radiModelDelfin = sqrt(auxX + auxY + auxZ);
+
+}
+
 //F16
 void MyGLWidget::calculaCapsaF16()
 {
 
-    EsferaMinimaF16.x = EsferaMaximaF16.x = f16.vertices()[0];
-    EsferaMinimaF16.y = EsferaMaximaF16.y = f16.vertices()[1];
-    EsferaMinimaF16.z = EsferaMaximaF16.z = f16.vertices()[2];
+    EsferaMinimaF16.x = EsferaMaximaF16.x = models[5].vertices()[0];
+    EsferaMinimaF16.y = EsferaMaximaF16.y = models[5].vertices()[1];
+    EsferaMinimaF16.z = EsferaMaximaF16.z = models[5].vertices()[2];
 
 
-    for(unsigned int i = 3; i < f16.vertices().size(); i+=3){
+    for(unsigned int i = 3; i < models[5].vertices().size(); i+=3){
         //Comprovamos la componente 'x'
-        EsferaMinimaF16.x = std::min(EsferaMinimaF16.x,(float) f16.vertices()[i]);
-        EsferaMaximaF16.x = std::max(EsferaMaximaF16.x,(float) f16.vertices()[i]);
+        EsferaMinimaF16.x = std::min(EsferaMinimaF16.x,(float) models[5].vertices()[i]);
+        EsferaMaximaF16.x = std::max(EsferaMaximaF16.x,(float) models[5].vertices()[i]);
 
         //Comprovamos la componente 'y'
-        EsferaMinimaF16.y = std::min(EsferaMinimaF16.y,(float) f16.vertices()[i+1]);
-        EsferaMaximaF16.y = std::max(EsferaMaximaF16.y,(float) f16.vertices()[i+1]);
+        EsferaMinimaF16.y = std::min(EsferaMinimaF16.y,(float) models[5].vertices()[i+1]);
+        EsferaMaximaF16.y = std::max(EsferaMaximaF16.y,(float) models[5].vertices()[i+1]);
 
         //Comprovamos la componente 'z'
-        EsferaMinimaF16.z = std::min(EsferaMinimaF16.z,(float) f16.vertices()[i+2]);
-        EsferaMaximaF16.z = std::max(EsferaMaximaF16.z,(float) f16.vertices()[i+2]);
+        EsferaMinimaF16.z = std::min(EsferaMinimaF16.z,(float) models[5].vertices()[i+2]);
+        EsferaMaximaF16.z = std::max(EsferaMaximaF16.z,(float) models[5].vertices()[i+2]);
 
     }
 
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del vacas
     scaleF16 = 2/(EsferaMaximaF16.y - EsferaMinimaF16.y);
     CBMF16 = glm::vec3((EsferaMaximaF16.x + EsferaMinimaF16.x)/2, EsferaMinimaF16.y, (EsferaMaximaF16.z + EsferaMinimaF16.z)/2 );
-
-    for(int i = 0; i < 4; ++i){
-        EsferaMinimaF16.x = std::min(EsferaMinimaF16.x, Vertices[i].x);
-        EsferaMaximaF16.x = std::max(EsferaMaximaF16.x, Vertices[i].x);
-
-        EsferaMinimaF16.y = std::min(EsferaMinimaF16.y, Vertices[i].y);
-        EsferaMaximaF16.y = std::max(EsferaMaximaF16.y, Vertices[i].y);
-
-        EsferaMinimaF16.z = std::min(EsferaMinimaF16.z, Vertices[i].z);
-        EsferaMaximaF16.z = std::max(EsferaMaximaF16.z, Vertices[i].z);
-    }
 
     calculaCentreModelF16();
 
@@ -764,40 +589,29 @@ void MyGLWidget::calculaCentreModelF16()
 void MyGLWidget::calculaCapsaPorsche()
 {
 
-    EsferaMinimaPorsche.x = EsferaMaximaPorsche.x = porsche.vertices()[0];
-    EsferaMinimaPorsche.y = EsferaMaximaPorsche.y = porsche.vertices()[1];
-    EsferaMinimaPorsche.z = EsferaMaximaPorsche.z = porsche.vertices()[2];
+    EsferaMinimaPorsche.x = EsferaMaximaPorsche.x = models[6].vertices()[0];
+    EsferaMinimaPorsche.y = EsferaMaximaPorsche.y = models[6].vertices()[1];
+    EsferaMinimaPorsche.z = EsferaMaximaPorsche.z = models[6].vertices()[2];
 
 
-    for(unsigned int i = 3; i < porsche.vertices().size(); i+=3){
+    for(unsigned int i = 3; i < models[6].vertices().size(); i+=3){
         //Comprovamos la componente 'x'
-        EsferaMinimaPorsche.x = std::min(EsferaMinimaPorsche.x,(float) porsche.vertices()[i]);
-        EsferaMaximaPorsche.x = std::max(EsferaMaximaPorsche.x,(float) porsche.vertices()[i]);
+        EsferaMinimaPorsche.x = std::min(EsferaMinimaPorsche.x,(float) models[6].vertices()[i]);
+        EsferaMaximaPorsche.x = std::max(EsferaMaximaPorsche.x,(float) models[6].vertices()[i]);
 
         //Comprovamos la componente 'y'
-        EsferaMinimaPorsche.y = std::min(EsferaMinimaPorsche.y,(float) porsche.vertices()[i+1]);
-        EsferaMaximaPorsche.y = std::max(EsferaMaximaPorsche.y,(float) porsche.vertices()[i+1]);
+        EsferaMinimaPorsche.y = std::min(EsferaMinimaPorsche.y,(float) models[6].vertices()[i+1]);
+        EsferaMaximaPorsche.y = std::max(EsferaMaximaPorsche.y,(float) models[6].vertices()[i+1]);
 
         //Comprovamos la componente 'z'
-        EsferaMinimaPorsche.z = std::min(EsferaMinimaPorsche.z,(float) porsche.vertices()[i+2]);
-        EsferaMaximaPorsche.z = std::max(EsferaMaximaPorsche.z,(float) porsche.vertices()[i+2]);
+        EsferaMinimaPorsche.z = std::min(EsferaMinimaPorsche.z,(float) models[6].vertices()[i+2]);
+        EsferaMaximaPorsche.z = std::max(EsferaMaximaPorsche.z,(float) models[6].vertices()[i+2]);
 
     }
 
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del vacas
     scalePorsche = 2/(EsferaMaximaPorsche.y - EsferaMinimaPorsche.y);
     CBMPorsche = glm::vec3((EsferaMaximaPorsche.x + EsferaMinimaPorsche.x)/2, EsferaMinimaPorsche.y, (EsferaMaximaPorsche.z + EsferaMinimaPorsche.z)/2 );
-
-    for(int i = 0; i < 4; ++i){
-        EsferaMinimaPorsche.x = std::min(EsferaMinimaPorsche.x, Vertices[i].x);
-        EsferaMaximaPorsche.x = std::max(EsferaMaximaPorsche.x, Vertices[i].x);
-
-        EsferaMinimaPorsche.y = std::min(EsferaMinimaPorsche.y, Vertices[i].y);
-        EsferaMaximaPorsche.y = std::max(EsferaMaximaPorsche.y, Vertices[i].y);
-
-        EsferaMinimaPorsche.z = std::min(EsferaMinimaPorsche.z, Vertices[i].z);
-        EsferaMaximaPorsche.z = std::max(EsferaMaximaPorsche.z, Vertices[i].z);
-    }
 
     calculaCentreModelPorsche();
 
@@ -1210,6 +1024,39 @@ void MyGLWidget::modelTransformVaca2()
     glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
 }
 
+void MyGLWidget::modelTransformDelfin1()
+{
+    // Matriu de transformació de model
+    glm::mat4 transform (1.0f);
+    transform = glm::scale(transform, glm::vec3(scale));
+    transform = glm::translate(transform, glm::vec3(1.0,0.0,1.0));
+
+    transform = glm::scale(transform, glm::vec3(scaleDelfin));
+
+    transform = glm::rotate(transform,degreesX,y);
+
+    transform = glm::translate(transform,-CBMDelfin);
+
+    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
+}
+
+void MyGLWidget::modelTransformDelfin2()
+{
+    // Matriu de transformació de model
+    glm::mat4 transform (1.0f);
+    transform = glm::scale(transform, glm::vec3(scale));
+    transform = glm::translate(transform, glm::vec3(-1.0,0.0,-1.0));
+
+    transform = glm::scale(transform, glm::vec3(scaleDelfin));
+
+    transform = glm::rotate(transform,degreesX,y);
+    transform = glm::rotate(transform,(float)M_PI,y);
+
+    transform = glm::translate(transform,-CBMDelfin);
+
+    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
+}
+
 void MyGLWidget::modelTransformF161()
 {
     // Matriu de transformació de model
@@ -1427,13 +1274,34 @@ void MyGLWidget::Tercera(bool b){
 void MyGLWidget::CarregaModel(QString str)
 {
     makeCurrent();
-    if(str == "Patricio") model = "Patricio";
-    else if(str == "Homer") model = "Homer";
-    else if(str == "Legoman") model = "Legoman";
-    else if(str == "Vaca") model = "Vaca";
-    else if(str == "F16") model = "F16";
-    else if(str == "Porsche") model = "Porsche";
-
+    if(str == "Patricio"){
+        model = "Patricio";
+        index = 1;
+    }
+    else if(str == "Homer"){
+        model = "Homer";
+        index = 2;
+    }
+    else if(str == "Legoman"){
+        model = "Legoman";
+        index = 3;
+    }
+    else if(str == "Vaca"){
+        model = "Vaca";
+        index = 4;
+    }
+    else if(str == "Delfin"){
+        model = "Delfin";
+        index = 5;
+    }
+    else if(str == "F16"){
+        model = "F16";
+        index = 6;
+    }
+    else if(str == "Porsche"){
+        model = "Porsche";
+        index = 7;
+    }
     update();
 }
 

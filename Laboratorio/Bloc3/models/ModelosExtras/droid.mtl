@@ -1,0 +1,52 @@
+# Blender MTL File: mesada.blend
+# Material Count: 5
+newmtl white
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.614902 0.467451 0.357647
+Ks 0.470588 0.470588 0.470588
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl Oil_Slick
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.8 0.8 0.8
+Ks 0.439216 0.439216 0.439216
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl Material_#22
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.636863 0.636863 0.636863
+Ks 0.470588 0.470588 0.470588
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl Material_#221
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.517647 0.517647 0.517647
+Ks 0.470588 0.470588 0.470588
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl Material_#15
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.724706 0.0 0.0
+Ks 0.470588 0.470588 0.470588
+Ni 1.0
+d 1.0
+illum 2
+
+

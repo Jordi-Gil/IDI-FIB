@@ -1,0 +1,32 @@
+# Blender MTL File: mesada.blend
+# Material Count: 3
+newmtl BLUE_PLASTIC
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.053333 0.122353 0.51451
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl WHITE_PLASTIC
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.586667 0.586667 0.586667
+Ks 0.366667 0.366667 0.366667
+Ni 1.0
+d 1.0
+illum 2
+
+
+newmtl YELLOW_PLASTIC
+Ns 96.0
+Ka 0.0 0.0 0.0
+Kd 0.633726 0.561569 0.156863
+Ks 0.5 0.5 0.5
+Ni 1.0
+d 1.0
+illum 2
+
+

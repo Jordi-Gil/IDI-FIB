@@ -52,6 +52,10 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void setBlue(int color);
 
     void setSong(QString song);
+    /*
+    void updateHeight();
+    
+    void updateWidth();*/
 
   signals:
     //Radio Buttons
@@ -97,8 +101,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformLego1 ();
     void modelTransformLego2 ();
 
-    void modelTransformVaca2 ();
     void modelTransformVaca1 ();
+    void modelTransformVaca2 ();
+    
+    void modelTransformDelfin1 ();
+    void modelTransformDelfin2 ();
 
     void modelTransformF161 ();
     void modelTransformF162 ();
@@ -106,6 +113,9 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void modelTransformPorsche1 ();
     void modelTransformPorsche2 ();
 
+    void modelTransformCotxe1 ();
+    void modelTransformCotxe2 ();
+    
     void modelTransformFloor ();
 
     void projectTransformOrtogonal ();
@@ -116,21 +126,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void ini_camera ();
     void ini_camera_3a_persona();
 
-    void carregaModelPatricio();
-    void carregaModelHomer();
-    void carregaModelLegoman();
-    void carregaModelVaca();
-    void carregaModelF16();
-    void carregaModelPorsche();
-    void carregaFloor ();
+    void carregaModels();
+    void carregaFloor();
 
-    void pinta_patricio ();
-    void pinta_homer();
-    void pinta_legoman();
-    void pinta_vaca();
-    void pinta_f16();
-    void pinta_porsche();
-    void pinta_floor ();
+    void pinta_model();
+    void pinta_floor();
 
     void evitaDeformacions (int w, int h);
 
@@ -148,6 +148,9 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void calculaCapsaVaca();
     void calculaCentreModelVaca();
 
+    void calculaCapsaDelfin();
+    void calculaCentreModelDelfin();
+    
     void calculaCapsaF16();
     void calculaCentreModelF16();
 
@@ -158,7 +161,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     // attribute locations
     GLuint vertexLoc;
-    GLuint colorLoc;
+    GLuint matdiffLoc;
 
     // uniform locations
     GLuint transLoc;
@@ -166,15 +169,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint viewLoc;
 
     // VAO i VBO names
-    GLuint VAO_Patricio, VBO_PatricioPos, VBO_PatricioCol;
-    GLuint VAO_Homer, VBO_HomerPos, VBO_HomerCol;
-    GLuint VAO_Legoman, VBO_LegomanPos, VBO_LegomanCol;
-    GLuint VAO_Vaca, VBO_VacaPos, VBO_VacaCol;
-    GLuint VAO_Floor, VBO_FloorPos, VBO_FloorCol;
-    GLuint VAO_Porsche, VBO_PorschePos, VBO_PorscheCol;
-    GLuint VAO_F16, VBO_F16Pos, VBO_F16Col;
+    GLuint Vs[8][3];
 
     glm::vec3 Vertices[4];
+    Model models[7];
+    int index;
 
     // Program
     QOpenGLShaderProgram *program;
@@ -198,22 +197,15 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     QMediaPlayer player;
     float one_degree;
 
-    float scaleM;
     float scalePat1;
     float scaleHomer;
     float scaleLego;
     float scaleVaca;
+    float scaleDelfin;
     float scaleF16;
     float scalePorsche;
-    //Variables Model
-
-    Model patricio;
-    Model homer;
-    Model legoman;
-    Model vaca;
-    Model f16;
-    Model porsche;
-
+        
+    
     //Variable de transformació
     QPoint position;
     float scale;
@@ -281,6 +273,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     glm::vec3 EsferaMinimaVaca;
     glm::vec3 centreModelVaca;
     glm::vec3 CBMVaca;
+    
+    glm::vec3 EsferaMaximaDelfin;
+    glm::vec3 EsferaMinimaDelfin;
+    glm::vec3 centreModelDelfin;
+    glm::vec3 CBMDelfin;
 
     glm::vec3 EsferaMaximaF16;
     glm::vec3 EsferaMinimaF16;
@@ -291,15 +288,17 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     glm::vec3 EsferaMinimaPorsche;
     glm::vec3 centreModelPorsche;
     glm::vec3 CBMPorsche;
+    
 
     //vector normalitzat
     glm::vec3 v;
 
     float radiModel;
-    float radiModelLego;
     float radiModelPat;
     float radiModelHomer;
+    float radiModelLego;
     float radiModelVaca;
+    float radiModelDelfin;
     float radiModelF16;
     float radiModelPorsche;
     float d;
