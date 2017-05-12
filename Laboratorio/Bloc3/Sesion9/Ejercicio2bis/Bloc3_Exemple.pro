@@ -6,7 +6,7 @@ INCLUDEPATH += ../../Model
 
 FORMS += MyForm.ui
 
-HEADERS += MyForm.h MyGLWidget.h ../../Model/model.h MyLabel.h MyPushButton.h
+HEADERS += MyForm.h MyGLWidget.h ../../Model/model.h MyLabel.h MyPushButton.h MyComboBox.h
 
 SOURCES += main.cpp MyForm.cpp \
-        MyGLWidget.cpp ../../Model/model.cpp MyLabel.cpp MyPushButton.cpp
+        MyGLWidget.cpp ../../Model/model.cpp MyLabel.cpp MyPushButton.cpp MyComboBox.cpp

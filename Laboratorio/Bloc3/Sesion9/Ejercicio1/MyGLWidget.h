@@ -156,7 +156,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void restart();
 
     // attribute locations
-    GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;;
+    GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
 
     // uniform locations
     GLuint transLoc;
@@ -164,6 +164,8 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint viewLoc;
     GLuint colorFocusLoc;
     GLuint posFocusLoc;
+    GLuint boolLoc;
+    int my_bool;
 
     // VAO i VBO names
     GLuint Vs[8][7];

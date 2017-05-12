@@ -31,7 +31,6 @@ void MyGLWidget::initializeGL ()
 
     red = green = blue = 1.0;
 
-    model = "Patricio";
     index = 2;
 
     origen = glm::vec3(0,0,0);
@@ -45,7 +44,7 @@ void MyGLWidget::initializeGL ()
     // Cal inicialitzar l'ús de les funcions d'OpenGL
     initializeOpenGLFunctions();
 
-    glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
+    glClearColor(0.1, 0.1, 0.1, 1.0); // defineix color de fons (d'esborrat)
     glEnable(GL_DEPTH_TEST);
 
     carregaShaders();
@@ -60,6 +59,10 @@ void MyGLWidget::initializeGL ()
     factor = 1;
     sun = false;
     cambia = false;
+    tm = 0;
+
+    my_bool = 0;
+    glUniform1i(boolLoc, my_bool);
 
     fvant = 85-(int)((FOV-15*(float)M_PI/180)*((float)180/M_PI));
     //Signals
@@ -78,73 +81,19 @@ void MyGLWidget::paintGL ()
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Carreguem la transformació de model
-    if(model == "Patricio"){
-        modelTransformPat1 ();
-        pinta_model();
 
-        modelTransformPat2();
-        pinta_model();
-    }
-    else if(model == "Homer"){
-        modelTransformHomer1();
-        pinta_model();
 
-        modelTransformHomer2();
-        pinta_model();
-    }
-    else if(model == "Legoman"){
-        modelTransformLego1();
-        pinta_model();
+    modelTransform1();
+    pinta_model();
 
-        modelTransformLego2();
-        pinta_model();
-    }
-    else if(model == "LegomanAssegut"){
-      modelTransformLegoAssegut1();
-      pinta_model();
-
-      modelTransformLegoAssegut2();
-      pinta_model();
-    }
-    else if(model == "ShaunHastings"){
-      modelTransformShaun1();
-      pinta_model();
-
-      modelTransformShaun2();
-      pinta_model();
-    }
-    else if(model == "Vaca"){
-        modelTransformVaca1();
-        pinta_model();
-
-        modelTransformVaca2();
-        pinta_model();
-    }
-    else if(model == "Delfin"){
-        modelTransformDelfin1();
-        pinta_model();
-
-        modelTransformDelfin2();
-        pinta_model();
-    }
-    else if(model == "F16"){
-        modelTransformF161();
-        pinta_model();
-
-        modelTransformF162();
-        pinta_model();
-    }
-    else if(model == "Porsche"){
-        modelTransformPorsche1();
-        pinta_model();
-
-        modelTransformPorsche2();
-        pinta_model();
-    }
+    modelTransform2();
+    pinta_model();
 
     modelTransformFloor ();
-  //  modelTransformWall();
     pinta_floor();
+
+    modelTransformWall();
+    pinta_wall();
 
     glBindVertexArray (0);
 
@@ -207,6 +156,7 @@ void MyGLWidget::carregaShaders()
 
     posFocusLoc = glGetUniformLocation(program->programId(), "posFocus");
     colorFocusLoc = glGetUniformLocation(program->programId(), "colFocus");
+    boolLoc = glGetUniformLocation(program->programId(),"my_bool");
 }
 
 /*
@@ -242,8 +192,9 @@ void MyGLWidget::carregaModels(){
     models[8].load("../../models/dolphin.obj");
     models[9].load("../../models/f-16.obj");
     models[10].load("../../models/porsche.obj");
+    models[11].load("../../models/ArmyPilot/ArmyPilot.obj");
 
-     for(int i = 0; i < 11; ++i){
+     for(int i = 0; i < 12; ++i){
     // Creació del Vertex Array Object per pintar
         glGenVertexArrays(1, &Vs[i][0]);
         glBindVertexArray(Vs[i][0]);
@@ -304,6 +255,7 @@ void MyGLWidget::carregaModels(){
 }
 
 
+
 /*
  ********************************
  *                              *
@@ -327,10 +279,16 @@ void MyGLWidget::pinta_floor()
 
     //pintem
     glDrawArrays(GL_TRIANGLES, 0, models[0].faces().size()*3);
-/*
+
+}
+
+void MyGLWidget::pinta_wall()
+{
+    // Activem el VAO per a pintar el floor
     glBindVertexArray(Vs[1][0]);
 
-    glDrawArrays(GL_TRIANGLES, 0, models[1].faces().size()*3);*/
+    //pintem
+    glDrawArrays(GL_TRIANGLES, 0, models[1].faces().size()*3);
 }
 
 /*
@@ -342,7 +300,7 @@ void MyGLWidget::pinta_floor()
 */
 void MyGLWidget::calculaCapsaModels()
 {
-  for(int i = 0; i < 11; ++i)
+  for(int i = 0; i < 12; ++i)
   {
 
     EsferaModels[i][0].x = EsferaModels[i][1].x = models[i].vertices()[0];
@@ -365,6 +323,8 @@ void MyGLWidget::calculaCapsaModels()
     }
     //escalat del Model 'i'
     scales[i] = 2/(EsferaModels[i][1].y - EsferaModels[i][0].y);
+    if(i == 7 or i == 10) scales[i] *= 0.5;
+    if(i == 9)scales[i] *= 0.4;
     //Centre de la Base del Model 'i'
     EsferaModels[i][3] = glm::vec3((EsferaModels[i][1].x + EsferaModels[i][0].x)/2,
                                     EsferaModels[i][0].y,
@@ -518,6 +478,27 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
         case Qt::Key_R: {
             if(!sun) restart();
         }
+        case Qt::Key_Q: {
+            if(my_bool != 0){
+                my_bool = 0;
+                glUniform1i(boolLoc, my_bool);
+            }
+            break;
+        }
+        case Qt::Key_W: {
+            if(my_bool != 1){
+                my_bool = 1;
+                glUniform1i(boolLoc, my_bool);
+            }
+            break;
+        }
+        case Qt::Key_E: {
+            if(my_bool != 2){
+                my_bool = 2;
+                glUniform1i(boolLoc, my_bool);
+            }
+            break;
+        }
         default: event->ignore(); break;
     }
     update();
@@ -592,6 +573,62 @@ void MyGLWidget::ini_camera_3a_persona()
  ***********************************
 */
 
+void MyGLWidget::modelTransform1()
+{
+  glm::mat4 transform (1.0f);
+  transform = glm::scale(transform, glm::vec3(scale));
+  if(index == 7) transform = glm::translate(transform, glm::vec3(1.0,-2.1,0.4));
+  else if(index == 9) transform = glm::translate(transform, glm::vec3(1.0,-2.0,0.5));
+  else if(index == 10) transform = glm::translate(transform, glm::vec3(1.0,-2.0,0.3));
+  else transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
+  transform = glm::scale(transform, glm::vec3(scales[index]));
+
+  transform = glm::rotate(transform,degreesX,y);
+  if(index == 3) transform = glm::rotate(transform, (float)M_PI/2, y);
+
+  transform = glm::translate(transform,-EsferaModels[index][3]);
+
+  if(index == 7){
+    transform = glm::translate(transform,glm::vec3(0,-EsferaModels[7][0].y,0));
+
+    //Colocar "Bien"
+    transform = glm::rotate(transform,(float)-M_PI/2,y);
+    transform = glm::rotate(transform,(float)-M_PI/2,x);
+  }
+
+  glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
+
+}
+
+void MyGLWidget::modelTransform2()
+{
+  glm::mat4 transform (1.0f);
+  transform = glm::scale(transform, glm::vec3(scale));
+  if(index == 7) transform = glm::translate(transform, glm::vec3(-1.0,-2.1,-0.4));
+  else if(index == 9) transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-0.5));
+  else if(index == 10) transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-0.3));
+  else transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
+  transform = glm::scale(transform, glm::vec3(scales[index]));
+
+
+  transform = glm::rotate(transform,degreesX,y);
+  transform = glm::rotate(transform,(float)M_PI,y);
+  if(index == 3) transform = glm::rotate(transform, (float)M_PI/2, y);
+
+  transform = glm::translate(transform,-EsferaModels[index][3]);
+
+  if(index == 7){
+    transform = glm::translate(transform,glm::vec3(0,-EsferaModels[7][0].y,0));
+
+    //Colocar "Bien"
+    transform = glm::rotate(transform,(float)-M_PI/2,y);
+    transform = glm::rotate(transform,(float)-M_PI/2,x);
+  }
+
+  glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
+
+}
+
 void MyGLWidget::modelTransformFloor()
 {
     glm::mat4 transform (1.0f);
@@ -608,317 +645,14 @@ void MyGLWidget::modelTransformWall()
 {
   glm::mat4 transform (1.0f);
   transform = glm::scale(transform, glm::vec3(scale));
-  transform = glm::scale(transform, glm::vec3(0.5));
-  transform = glm::translate(transform, glm::vec3(-EsferaModels[0][3].x, -EsferaModels[0][3].y, -EsferaModels[0][3].z));
+  transform = glm::translate(transform, glm::vec3(0.0, -2.0, -2.0));
+  transform = glm::scale(transform, glm::vec3(0.525));
 
   transform = glm::rotate(transform, (float)M_PI/2,y);
 
   transform = glm::translate(transform, -EsferaModels[1][3]);
 
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformPat1()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
-    transform = glm::scale(transform, glm::vec3(scales[2]));
-
-    transform = glm::rotate(transform,degreesX,y);
-
-    transform = glm::translate(transform,-EsferaModels[2][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformPat2()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
-    transform = glm::scale(transform, glm::vec3(scales[2]));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-
-    transform = glm::translate(transform,-EsferaModels[2][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformHomer1()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
-    transform = glm::scale(transform, glm::vec3(scales[3]));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform, (float)M_PI/2, y);
-
-    transform = glm::translate(transform,-EsferaModels[3][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformHomer2()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
-    transform = glm::scale(transform, glm::vec3(scales[3]));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-    transform = glm::rotate(transform, (float)M_PI/2, y);
-
-    transform = glm::translate(transform,-EsferaModels[3][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformLego1()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
-    transform = glm::scale(transform, glm::vec3(scales[4]));
-
-    transform = glm::rotate(transform,degreesX,y);
-
-    transform = glm::translate(transform,-EsferaModels[4][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformLego2()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
-    transform = glm::scale(transform, glm::vec3(scales[4]));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-
-    transform = glm::translate(transform,-EsferaModels[4][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-//Lego Assegut
-void MyGLWidget::modelTransformLegoAssegut1()
-{
-  glm::mat4 transform(1.0f);
-  transform = glm::scale(transform, glm::vec3(scale));
-  transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
-  transform = glm::scale(transform, glm::vec3(scales[5]));
-
-  transform = glm::rotate(transform,degreesX,y);
-
-  transform = glm::translate(transform,-EsferaModels[5][3]);
-
-  glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformLegoAssegut2()
-{
-  glm::mat4 transform(1.0f);
-  transform = glm::scale(transform, glm::vec3(scale));
-  transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
-  transform = glm::scale(transform, glm::vec3(scales[5]));
-
-  transform = glm::rotate(transform,degreesX,y);
-  transform = glm::rotate(transform,(float)M_PI,y);
-
-  transform = glm::translate(transform,-EsferaModels[5][3]);
-
-  glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformShaun1()
-{
-  glm::mat4 transform(1.0f);
-  transform = glm::scale(transform, glm::vec3(scale));
-  transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
-  transform = glm::scale(transform, glm::vec3(scales[6]));
-
-  transform = glm::rotate(transform, degreesX, y);
-
-  transform = glm::translate(transform, -EsferaModels[6][3]);
-
-  glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformShaun2()
-{
-  glm::mat4 transform(1.0f);
-  transform = glm::scale(transform, glm::vec3(scale));
-  transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
-  transform = glm::scale(transform, glm::vec3(scales[6]));
-
-  transform = glm::rotate(transform, degreesX, y);
-  transform = glm::rotate(transform,(float)M_PI,y);
-
-  transform = glm::translate(transform, -EsferaModels[6][3]);
-
-  glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformVaca1()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.1,0.4));
-
-    transform = glm::scale(transform, glm::vec3(scales[7]));
-    transform = glm::scale(transform, glm::vec3(0.5));
-
-    transform = glm::rotate(transform,degreesX,y);
-
-    transform = glm::translate(transform,-EsferaModels[7][3]);
-    transform = glm::translate(transform,glm::vec3(0,-EsferaModels[7][0].y,0));
-
-    //Colocar "Bien"
-    transform = glm::rotate(transform,(float)-M_PI/2,y);
-    transform = glm::rotate(transform,(float)-M_PI/2,x);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformVaca2()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.1,-0.4));
-
-    transform = glm::scale(transform, glm::vec3(scales[7]));
-    transform = glm::scale(transform, glm::vec3(0.5));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-
-
-    transform = glm::translate(transform,-EsferaModels[7][3]);
-    transform = glm::translate(transform,glm::vec3(0,-EsferaModels[7][0].y,0));
-
-    //Colocar "Bien"
-    transform = glm::rotate(transform,(float)-M_PI/2,y);
-    transform = glm::rotate(transform,(float)-M_PI/2,x);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformDelfin1()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.0,1.0));
-
-    transform = glm::scale(transform, glm::vec3(scales[8]));
-
-    transform = glm::rotate(transform,degreesX,y);
-
-    transform = glm::translate(transform,-EsferaModels[8][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformDelfin2()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-1.0));
-
-    transform = glm::scale(transform, glm::vec3(scales[8]));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-
-    transform = glm::translate(transform,-EsferaModels[8][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformF161()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.0,0.5));
-
-    transform = glm::scale(transform, glm::vec3(scales[9]));
-    transform = glm::scale(transform, glm::vec3(0.4));
-
-    transform = glm::rotate(transform,degreesX,y);
-
-    transform = glm::translate(transform,-EsferaModels[9][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformF162()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-0.5));
-
-    transform = glm::scale(transform, glm::vec3(scales[9]));
-    transform = glm::scale(transform, glm::vec3(0.4));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-
-    transform = glm::translate(transform,-EsferaModels[9][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformPorsche1()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(1.0,-2.0,0.3));
-
-    transform = glm::scale(transform, glm::vec3(scales[10]));
-    transform = glm::scale(transform, glm::vec3(0.5));
-
-    transform = glm::rotate(transform,degreesX,y);
-
-    transform = glm::translate(transform,-EsferaModels[10][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
-}
-
-void MyGLWidget::modelTransformPorsche2()
-{
-    // Matriu de transformació de model
-    glm::mat4 transform (1.0f);
-    transform = glm::scale(transform, glm::vec3(scale));
-    transform = glm::translate(transform, glm::vec3(-1.0,-2.0,-0.3));
-
-    transform = glm::scale(transform, glm::vec3(scales[10]));
-    transform = glm::scale(transform, glm::vec3(0.5));
-
-    transform = glm::rotate(transform,degreesX,y);
-    transform = glm::rotate(transform,(float)M_PI,y);
-
-    transform = glm::translate(transform,-EsferaModels[10][3]);
-
-    glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
 }
 
 void MyGLWidget::evitaDeformacions(int w, int h)
@@ -1031,49 +765,6 @@ void MyGLWidget::Ortogonal(bool b)
     update();
 }
 
-
-void MyGLWidget::CarregaModel(QString str)
-{
-    makeCurrent();
-    if(str == "Patricio"){
-        model = "Patricio";
-        index = 2;
-    }
-    else if(str == "Homer"){
-        model = "Homer";
-        index = 3;
-    }
-    else if(str == "Legoman"){
-        model = "Legoman";
-        index = 4;
-    }
-    else if(str == "Legoman Assegut"){
-      model = "LegomanAssegut";
-      index = 5;
-    }
-    else if(str == "Shaun Hastings"){
-      model = "ShaunHastings";
-      index = 6;
-    }
-    else if(str == "Vaca"){
-        model = "Vaca";
-        index = 7;
-    }
-    else if(str == "Delfin"){
-        model = "Delfin";
-        index = 8;
-    }
-    else if(str == "F16"){
-        model = "F16";
-        index = 9;
-    }
-    else if(str == "Porsche"){
-        model = "Porsche";
-        index = 10;
-    }
-    update();
-}
-
 void MyGLWidget::updateTheta(int value)
 {
     makeCurrent();
@@ -1124,22 +815,29 @@ void MyGLWidget::setSong(QString song)
     player.setMedia(QUrl::fromLocalFile(filename));
     update();
 }
+//NUEVO
+void MyGLWidget::setOBJ(QString objfile)
+{
+  std::cerr << objfile.toStdString() << "\n";
+}
+
+void MyGLWidget::setIndex(int ind)
+{
+  makeCurrent();
+  index = ind + 2;
+  std::cerr <<ind + 2 << "\n";
+  update();
+}
 
 void MyGLWidget::sunshine()
 {
     makeCurrent();
+    posFocus.x = 3.0*glm::cos(tm);
+    posFocus.y = 3.0*glm::sin(tm);
+    tm += 0.01;
+    if(tm >= (float)2*M_PI) tm = 0;
     glUniform3fv(posFocusLoc, 1, &posFocus[0]);
     glUniform3fv(colorFocusLoc, 1, &colFocus[0]);
-    if(!cambia){
-        posFocus.y += 0.1*factor;
-        if(posFocus.y >= 4) factor = -1;
-        else if(posFocus.y <= -4) factor = 1;
-    }
-    else{
-        posFocus.x +=0.1*factor;
-        if(posFocus.x >= 4) factor = -1;
-        else if(posFocus.x <= -4) factor = 1;
-    }
     update();
 }
 

@@ -29,8 +29,6 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     void Ortogonal(bool b);
 
-    void CarregaModel(QString str);
-
     void updateTheta(int value);
 
     void updatePsi(int value);
@@ -44,10 +42,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void setBlue(int color);
 
     void setSong(QString song);
-    /*
-    void updateHeight();
 
-    void updateWidth();*/
+    void setOBJ(QString objfile);
+
+    void setIndex(int ind);
+
 
   signals:
     //Radio Buttons
@@ -85,35 +84,8 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void createBuffers ();
     void carregaShaders ();
 
-    void modelTransformPat1 ();
-    void modelTransformPat2 ();
-
-    void modelTransformHomer1 ();
-    void modelTransformHomer2 ();
-
-    void modelTransformLego1 ();
-    void modelTransformLego2 ();
-
-    void modelTransformLegoAssegut1();
-    void modelTransformLegoAssegut2();
-
-    void modelTransformShaun1();
-    void modelTransformShaun2();
-
-    void modelTransformVaca1 ();
-    void modelTransformVaca2 ();
-
-    void modelTransformDelfin1 ();
-    void modelTransformDelfin2 ();
-
-    void modelTransformF161 ();
-    void modelTransformF162 ();
-
-    void modelTransformPorsche1 ();
-    void modelTransformPorsche2 ();
-
-    void modelTransformCotxe1 ();
-    void modelTransformCotxe2 ();
+    void modelTransform1();
+    void modelTransform2();
 
     void modelTransformFloor ();
     void modelTransformWall ();
@@ -131,6 +103,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     void pinta_model();
     void pinta_floor();
+    void pinta_wall();
 
     void evitaDeformacions (int w, int h);
 
@@ -152,15 +125,18 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint viewLoc;
     GLuint colorFocusLoc;
     GLuint posFocusLoc;
+    GLuint boolLoc;
+
+    int my_bool;
 
     // VAO i VBO names
-    GLuint Vs[11][7];
+    GLuint Vs[12][7];
 
-    Model models[11];
+    Model models[12];
 
-    float scales[11];
-    float radiModels[11];
-    glm::vec3 EsferaModels[11][4];
+    float scales[12];
+    float radiModels[12];
+    glm::vec3 EsferaModels[12][4];
 
     int index;
 
@@ -169,6 +145,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int factor;
     bool sun;
     bool cambia;
+    float tm;
 
     // Program
     QOpenGLShaderProgram *program;

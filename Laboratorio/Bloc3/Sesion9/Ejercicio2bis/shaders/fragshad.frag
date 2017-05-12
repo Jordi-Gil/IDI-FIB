@@ -5,6 +5,7 @@ in vec3 fmatdiff;
 in vec3 fmatspec;
 in float fmatshin;
 in mat4 viewmatrix;
+in mat4 tg;
 in vec4 vertSCO;
 in vec3 normalSCO;
 
@@ -13,6 +14,8 @@ out vec4 FragColor;
 // Valors per als components que necessitem dels focus de llum
 uniform vec3 colFocus;
 uniform vec3 posFocus;
+uniform int my_bool;
+
 vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
 
 vec3 Lambert (vec3 NormSCO, vec3 L)
@@ -52,8 +55,13 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
 
 void main()
 {
-		vec4 posFocus_aux = viewmatrix * vec4(posFocus,1.0);
-		vec3 L = normalize(posFocus_aux.xyz - vertSCO.xyz);
-		vec3 fcolor = Phong(normalSCO, L, vertSCO);
-	  FragColor = vec4(fcolor,1);
+    vec4 posFocus_aux;
+    if(my_bool == 0) posFocus_aux = viewmatrix * vec4(posFocus, 1.0); //coord escena    
+    else if(my_bool == 1)  posFocus_aux = vec4(posFocus, 1.0); // coord camera
+    else{
+        posFocus_aux = viewmatrix * tg * vec4(posFocus,1.0); //model
+    }
+    vec3 L = normalize(posFocus_aux.xyz - vertSCO.xyz);
+    vec3 fcolor = Phong(normalSCO, L, vertSCO);
+    FragColor = vec4(fcolor,1);
 }

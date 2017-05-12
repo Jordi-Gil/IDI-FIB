@@ -46,7 +46,7 @@ void MyGLWidget::initializeGL ()
     // Cal inicialitzar l'ús de les funcions d'OpenGL
     initializeOpenGLFunctions();
 
-    glClearColor(0.5, 0.7, 1.0, 1.0); // defineix color de fons (d'esborrat)
+    glClearColor(0.1, 0.1, 0.1, 1.0); // defineix color de fons (d'esborrat)
     glEnable(GL_DEPTH_TEST);
 
     carregaShaders();
@@ -61,6 +61,7 @@ void MyGLWidget::initializeGL ()
     factor = 1;
     sun = false;
     cambia = false;
+    tm = 0;
 
     fvant = 85-(int)((FOV-15*(float)M_PI/180)*((float)180/M_PI));
     //Signals
@@ -324,7 +325,7 @@ void MyGLWidget::carregaFloor(){
     // Definim el material del terra
     glm::vec3 amb(0,0,0.2);
     glm::vec3 diff(0,0,0.8);
-    glm::vec3 spec(0,0,1);
+    glm::vec3 spec(0.8,0.8,0.8);
     float shin = 100;
 
     // Fem que aquest material afecti a tots els vèrtexs per igual
@@ -453,7 +454,7 @@ void MyGLWidget::calculaCapsaPatricio()
     //Abansa de recalcular els vertex de l'esfera amb el terra, calculem l'escalat amb la capsa del patricio
     scalePat1 = 2/(EsferaMaximaPat.y - EsferaMinimaPat.y);
     CBMPat = glm::vec3((EsferaMaximaPat.x + EsferaMinimaPat.x)/2, EsferaMinimaPat.y, (EsferaMaximaPat.z + EsferaMinimaPat.z)/2 );
-    
+
     calculaCentreModelPat();
 
 }
@@ -468,12 +469,6 @@ void MyGLWidget::calculaCentreModelPat()
     float auxZ = pow((EsferaMaximaPat.z - EsferaMinimaPat.z),2);
 
     radiModelPat = sqrt(auxX + auxY + auxZ);
-    
-    std::cerr << "size vertexs: " << models[0].vertices().size() << "\n";
-    std::cerr << "CBM: " << CBMPat.x << ' ' << CBMPat.y << ' ' << CBMPat.z << "\n";
-    std::cerr << "centreModel: " << centreModelPat.x << ' ' << centreModelPat.y << ' ' << centreModelPat.z << "\n";
-    std::cerr << "scaleModel: " << scalePat1 << "\n";
-    std::cerr << "radiModel: " << radiModelPat << "\n";
 
 }
 
@@ -1400,18 +1395,12 @@ void MyGLWidget::setSong(QString song)
 void MyGLWidget::sunshine()
 {
     makeCurrent();
+    posFocus.x = 3.0*glm::cos(tm);
+    posFocus.y = 3.0*glm::sin(tm);
+    tm += 0.01;
+    if(tm >= (float)2*M_PI) tm = 0;
     glUniform3fv(posFocusLoc, 1, &posFocus[0]);
     glUniform3fv(colorFocusLoc, 1, &colFocus[0]);
-    if(!cambia){
-        posFocus.y += 0.1*factor;
-        if(posFocus.y >= 4) factor = -1;
-        else if(posFocus.y <= -4) factor = 1;
-    }
-    else{
-        posFocus.x +=0.1*factor;
-        if(posFocus.x >= 4) factor = -1;
-        else if(posFocus.x <= -4) factor = 1;
-    }
     update();
 }
 

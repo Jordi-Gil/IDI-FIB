@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>981</width>
-    <height>1260</height>
+    <width>809</width>
+    <height>1209</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,18 +38,35 @@
        </property>
       </widget>
      </item>
-     <item alignment="Qt::AlignBottom">
-      <widget class="MyPushButton" name="pushButton_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Examinar</string>
-       </property>
-      </widget>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="MyPushButton" name="pushButton_4">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Afegir Model</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="MyPushButton" name="pushButton_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Examinar</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
@@ -150,7 +167,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="MyComboBox" name="comboBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -441,6 +458,8 @@
     <slot>setSong(QString)</slot>
     <slot>updateHeight()</slot>
     <slot>updateWidth()</slot>
+    <slot>setOBJ(QString)</slot>
+    <slot>setIndex(int)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -464,7 +483,18 @@
    <header>MyPushButton.h</header>
    <slots>
     <signal>setFile(QString)</signal>
+    <signal>setOBJ(QString)</signal>
+    <signal>sendName(QString)</signal>
     <slot>myClicked()</slot>
+    <slot>myClicked2()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>MyComboBox</class>
+   <extends>QComboBox</extends>
+   <header>MyComboBox.h</header>
+   <slots>
+    <slot>setName(QString)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -477,8 +507,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>910</x>
-     <y>1240</y>
+     <x>772</x>
+     <y>1181</y>
     </hint>
     <hint type="destinationlabel">
      <x>693</x>
@@ -493,7 +523,7 @@
    <slot>Perspective(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>56</y>
     </hint>
     <hint type="destinationlabel">
@@ -509,28 +539,12 @@
    <slot>Ortogonal(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>119</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
      <y>84</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>comboBox</sender>
-   <signal>currentTextChanged(QString)</signal>
-   <receiver>widget</receiver>
-   <slot>CarregaModel(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>917</x>
-     <y>216</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>507</x>
-     <y>231</y>
     </hint>
    </hints>
   </connection>
@@ -541,11 +555,11 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>48</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>91</y>
     </hint>
    </hints>
@@ -557,11 +571,11 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>119</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>154</y>
     </hint>
    </hints>
@@ -573,7 +587,7 @@
    <slot>ZoomOrtogonal(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>154</y>
     </hint>
     <hint type="destinationlabel">
@@ -589,7 +603,7 @@
    <slot>ZoomPerspectiva(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>91</y>
     </hint>
     <hint type="destinationlabel">
@@ -605,7 +619,7 @@
    <slot>updatePsi(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>924</x>
+     <x>786</x>
      <y>367</y>
     </hint>
     <hint type="destinationlabel">
@@ -625,7 +639,7 @@
      <y>396</y>
     </hint>
     <hint type="destinationlabel">
-     <x>924</x>
+     <x>786</x>
      <y>367</y>
     </hint>
    </hints>
@@ -637,7 +651,7 @@
    <slot>setEscalat(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>437</y>
     </hint>
     <hint type="destinationlabel">
@@ -657,7 +671,7 @@
      <y>396</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>437</y>
     </hint>
    </hints>
@@ -669,11 +683,11 @@
    <slot>send()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>628</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
    </hints>
@@ -685,7 +699,7 @@
    <slot>setRed(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
     <hint type="destinationlabel">
@@ -701,7 +715,7 @@
    <slot>setGreen(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
     <hint type="destinationlabel">
@@ -717,7 +731,7 @@
    <slot>setBlue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
     <hint type="destinationlabel">
@@ -733,11 +747,11 @@
    <slot>updateblue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>595</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
    </hints>
@@ -749,11 +763,11 @@
    <slot>updategreen(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>562</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
    </hints>
@@ -765,11 +779,11 @@
    <slot>updatered(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
+     <x>789</x>
      <y>529</y>
     </hint>
     <hint type="destinationlabel">
-     <x>927</x>
+     <x>789</x>
      <y>496</y>
     </hint>
    </hints>
@@ -781,12 +795,12 @@
    <slot>myClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>1236</y>
+     <x>503</x>
+     <y>1109</y>
     </hint>
     <hint type="destinationlabel">
-     <x>94</x>
-     <y>1236</y>
+     <x>504</x>
+     <y>1109</y>
     </hint>
    </hints>
   </connection>
@@ -797,8 +811,8 @@
    <slot>setSong(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>94</x>
-     <y>1236</y>
+     <x>504</x>
+     <y>1109</y>
     </hint>
     <hint type="destinationlabel">
      <x>50</x>
@@ -813,11 +827,11 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>805</x>
+     <x>654</x>
      <y>173</y>
     </hint>
     <hint type="destinationlabel">
-     <x>884</x>
+     <x>789</x>
      <y>133</y>
     </hint>
    </hints>
@@ -829,11 +843,11 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>774</x>
+     <x>654</x>
      <y>54</y>
     </hint>
     <hint type="destinationlabel">
-     <x>866</x>
+     <x>789</x>
      <y>77</y>
     </hint>
    </hints>
@@ -845,11 +859,11 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>810</x>
+     <x>654</x>
      <y>137</y>
     </hint>
     <hint type="destinationlabel">
-     <x>954</x>
+     <x>789</x>
      <y>108</y>
     </hint>
    </hints>
@@ -861,11 +875,11 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>807</x>
+     <x>654</x>
      <y>22</y>
     </hint>
     <hint type="destinationlabel">
-     <x>887</x>
+     <x>789</x>
      <y>48</y>
     </hint>
    </hints>
@@ -877,11 +891,11 @@
    <slot>updateTheta(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>913</x>
+     <x>786</x>
      <y>298</y>
     </hint>
     <hint type="destinationlabel">
-     <x>813</x>
+     <x>654</x>
      <y>307</y>
     </hint>
    </hints>
@@ -893,12 +907,76 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>774</x>
+     <x>654</x>
      <y>265</y>
     </hint>
     <hint type="destinationlabel">
-     <x>950</x>
+     <x>786</x>
      <y>275</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>pushButton_4</receiver>
+   <slot>myClicked2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>237</x>
+     <y>1109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>265</x>
+     <y>1109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>setOBJ(QString)</signal>
+   <receiver>widget</receiver>
+   <slot>setOBJ(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>218</x>
+     <y>1109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>1001</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>sendName(QString)</signal>
+   <receiver>comboBox</receiver>
+   <slot>setName(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>247</x>
+     <y>1096</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>692</x>
+     <y>201</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>widget</receiver>
+   <slot>setIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>702</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>625</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>

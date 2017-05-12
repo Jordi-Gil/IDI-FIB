@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDial>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGroupBox>
@@ -27,6 +26,7 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "MyComboBox.h"
 #include "MyGLWidget.h"
 #include "MyLabel.h"
 #include "MyPushButton.h"
@@ -39,6 +39,8 @@ public:
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout_9;
     MyGLWidget *widget;
+    QHBoxLayout *horizontalLayout_2;
+    MyPushButton *pushButton_4;
     MyPushButton *pushButton_3;
     QVBoxLayout *verticalLayout;
     QGroupBox *groupBox;
@@ -49,7 +51,7 @@ public:
     QSlider *horizontalSlider;
     QGroupBox *groupBox_2;
     QVBoxLayout *verticalLayout_3;
-    QComboBox *comboBox;
+    MyComboBox *comboBox;
     QGroupBox *groupBox_3;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_7;
@@ -75,7 +77,7 @@ public:
     {
         if (MyForm->objectName().isEmpty())
             MyForm->setObjectName(QStringLiteral("MyForm"));
-        MyForm->resize(981, 1260);
+        MyForm->resize(809, 1209);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -96,12 +98,24 @@ public:
 
         verticalLayout_9->addWidget(widget);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        pushButton_4 = new MyPushButton(MyForm);
+        pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
+        sizePolicy.setHeightForWidth(pushButton_4->sizePolicy().hasHeightForWidth());
+        pushButton_4->setSizePolicy(sizePolicy);
+
+        horizontalLayout_2->addWidget(pushButton_4);
+
         pushButton_3 = new MyPushButton(MyForm);
         pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
         sizePolicy.setHeightForWidth(pushButton_3->sizePolicy().hasHeightForWidth());
         pushButton_3->setSizePolicy(sizePolicy);
 
-        verticalLayout_9->addWidget(pushButton_3, 0, Qt::AlignBottom);
+        horizontalLayout_2->addWidget(pushButton_3);
+
+
+        verticalLayout_9->addLayout(horizontalLayout_2);
 
 
         horizontalLayout->addLayout(verticalLayout_9);
@@ -164,7 +178,7 @@ public:
         groupBox_2->setSizePolicy(sizePolicy2);
         verticalLayout_3 = new QVBoxLayout(groupBox_2);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        comboBox = new QComboBox(groupBox_2);
+        comboBox = new MyComboBox(groupBox_2);
         comboBox->setObjectName(QStringLiteral("comboBox"));
         sizePolicy.setHeightForWidth(comboBox->sizePolicy().hasHeightForWidth());
         comboBox->setSizePolicy(sizePolicy);
@@ -296,7 +310,6 @@ public:
         QObject::connect(pushButton, SIGNAL(clicked()), MyForm, SLOT(close()));
         QObject::connect(radioButton, SIGNAL(clicked(bool)), widget, SLOT(Perspective(bool)));
         QObject::connect(radioButton_2, SIGNAL(clicked(bool)), widget, SLOT(Ortogonal(bool)));
-        QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), widget, SLOT(CarregaModel(QString)));
         QObject::connect(radioButton, SIGNAL(toggled(bool)), horizontalSlider_2, SLOT(setVisible(bool)));
         QObject::connect(radioButton_2, SIGNAL(toggled(bool)), horizontalSlider, SLOT(setVisible(bool)));
         QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), widget, SLOT(ZoomOrtogonal(int)));
@@ -320,6 +333,10 @@ public:
         QObject::connect(widget, SIGNAL(updatePers()), radioButton, SLOT(click()));
         QObject::connect(dial_5, SIGNAL(sliderMoved(int)), widget, SLOT(updateTheta(int)));
         QObject::connect(widget, SIGNAL(updatetheta(int)), dial_5, SLOT(setValue(int)));
+        QObject::connect(pushButton_4, SIGNAL(clicked()), pushButton_4, SLOT(myClicked2()));
+        QObject::connect(pushButton_4, SIGNAL(setOBJ(QString)), widget, SLOT(setOBJ(QString)));
+        QObject::connect(pushButton_4, SIGNAL(sendName(QString)), comboBox, SLOT(setName(QString)));
+        QObject::connect(comboBox, SIGNAL(currentIndexChanged(int)), widget, SLOT(setIndex(int)));
 
         QMetaObject::connectSlotsByName(MyForm);
     } // setupUi
@@ -327,6 +344,7 @@ public:
     void retranslateUi(QWidget *MyForm)
     {
         MyForm->setWindowTitle(QApplication::translate("MyForm", "Form", 0));
+        pushButton_4->setText(QApplication::translate("MyForm", "Afegir Model", 0));
         pushButton_3->setText(QApplication::translate("MyForm", "Examinar", 0));
         groupBox->setTitle(QApplication::translate("MyForm", "\303\223ptica", 0));
         radioButton->setText(QApplication::translate("MyForm", "Perspec&tive", 0));

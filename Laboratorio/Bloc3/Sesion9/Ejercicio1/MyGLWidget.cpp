@@ -62,6 +62,9 @@ void MyGLWidget::initializeGL ()
     sun = false;
     cambia = false;
     
+    my_bool = 0;
+    glUniform1i(boolLoc, my_bool);
+    
     fvant = 85-(int)((FOV-15*(float)M_PI/180)*((float)180/M_PI));
     //Signals
     emit updateslfov(85-(int)((FOV-15*(float)M_PI/180)*((float)180/M_PI)));
@@ -201,6 +204,7 @@ void MyGLWidget::carregaShaders()
 
     posFocusLoc = glGetUniformLocation(program->programId(), "posFocus");
     colorFocusLoc = glGetUniformLocation(program->programId(), "colFocus");
+    boolLoc = glGetUniformLocation(program->programId(), "my_bool");
 }
 
 /*
@@ -324,7 +328,7 @@ void MyGLWidget::carregaFloor(){
     // Definim el material del terra
     glm::vec3 amb(0,0,0.2);
     glm::vec3 diff(0,0,0.8);
-    glm::vec3 spec(0,0,1);
+    glm::vec3 spec(0,0,0);
     float shin = 100;
 
     // Fem que aquest material afecti a tots els vèrtexs per igual
@@ -865,6 +869,27 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
         }
         case Qt::Key_R: {
             if(!sun) restart();
+        }
+        case Qt::Key_Q: {
+            if(my_bool != 0){
+                my_bool = 0;
+                glUniform1i(boolLoc, my_bool);
+            }
+            break;
+        }
+        case Qt::Key_W: {
+            if(my_bool != 1){
+                my_bool = 1;
+                glUniform1i(boolLoc, my_bool);
+            }
+            break;
+        }
+        case Qt::Key_E: {
+            if(my_bool != 2){
+                my_bool = 2;
+                glUniform1i(boolLoc, my_bool);
+            }
+            break;
         }
         default: event->ignore(); break;
     }

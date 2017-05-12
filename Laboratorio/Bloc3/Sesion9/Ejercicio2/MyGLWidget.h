@@ -176,6 +176,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int factor;
     bool sun;
     bool cambia;
+    float tm;
 
     // Program
     QOpenGLShaderProgram *program;
@@ -211,7 +212,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     //Paràmetre inicials
     float FOVini;
     float raini;
-    
+
     int fvant;
 
     //Variables Project Matrix

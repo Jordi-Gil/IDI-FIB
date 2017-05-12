@@ -17,6 +17,7 @@ out vec3 fmatdiff;
 out vec3 fmatspec;
 out float fmatshin;
 out mat4 viewmatrix;
+out mat4 tg;
 out vec4 vertSCO;
 out vec3 normalSCO;
 
@@ -33,5 +34,6 @@ void main()
     fmatspec = matspec;
     fmatshin = matshin;
     viewmatrix = VM;
+    tg = TG;
 
 }

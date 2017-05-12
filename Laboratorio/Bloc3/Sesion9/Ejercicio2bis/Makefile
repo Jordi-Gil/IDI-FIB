@@ -53,20 +53,24 @@ SOURCES       = main.cpp \
 		MyGLWidget.cpp \
 		../../Model/model.cpp \
 		MyLabel.cpp \
-		MyPushButton.cpp moc_MyForm.cpp \
+		MyPushButton.cpp \
+		MyComboBox.cpp moc_MyForm.cpp \
 		moc_MyGLWidget.cpp \
 		moc_MyLabel.cpp \
-		moc_MyPushButton.cpp
+		moc_MyPushButton.cpp \
+		moc_MyComboBox.cpp
 OBJECTS       = main.o \
 		MyForm.o \
 		MyGLWidget.o \
 		model.o \
 		MyLabel.o \
 		MyPushButton.o \
+		MyComboBox.o \
 		moc_MyForm.o \
 		moc_MyGLWidget.o \
 		moc_MyLabel.o \
-		moc_MyPushButton.o
+		moc_MyPushButton.o \
+		moc_MyComboBox.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -129,12 +133,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		MyGLWidget.h \
 		../../Model/model.h \
 		MyLabel.h \
-		MyPushButton.h main.cpp \
+		MyPushButton.h \
+		MyComboBox.h main.cpp \
 		MyForm.cpp \
 		MyGLWidget.cpp \
 		../../Model/model.cpp \
 		MyLabel.cpp \
-		MyPushButton.cpp
+		MyPushButton.cpp \
+		MyComboBox.cpp
 QMAKE_TARGET  = Bloc3_Exemple
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Bloc3_Exemple
@@ -312,8 +318,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents MyForm.h MyGLWidget.h ../../Model/model.h MyLabel.h MyPushButton.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp MyForm.cpp MyGLWidget.cpp ../../Model/model.cpp MyLabel.cpp MyPushButton.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents MyForm.h MyGLWidget.h ../../Model/model.h MyLabel.h MyPushButton.h MyComboBox.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp MyForm.cpp MyGLWidget.cpp ../../Model/model.cpp MyLabel.cpp MyPushButton.cpp MyComboBox.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents MyForm.ui $(DISTDIR)/
 
 
@@ -337,10 +343,15 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_MyForm.cpp moc_MyGLWidget.cpp moc_MyLabel.cpp moc_MyPushButton.cpp
+compiler_moc_header_make_all: moc_MyForm.cpp moc_MyGLWidget.cpp moc_MyLabel.cpp moc_MyPushButton.cpp moc_MyComboBox.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_MyForm.cpp moc_MyGLWidget.cpp moc_MyLabel.cpp moc_MyPushButton.cpp
+	-$(DEL_FILE) moc_MyForm.cpp moc_MyGLWidget.cpp moc_MyLabel.cpp moc_MyPushButton.cpp moc_MyComboBox.cpp
 moc_MyForm.cpp: ui_MyForm.h \
+		MyComboBox.h \
+		MyGLWidget.h \
+		../../Model/model.h \
+		MyLabel.h \
+		MyPushButton.h \
 		MyForm.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc3/Sesion9/Ejercicio2bis -I/usr/include/glm -I/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc3/Model -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include MyForm.h -o moc_MyForm.cpp
 
@@ -354,6 +365,9 @@ moc_MyLabel.cpp: MyLabel.h
 moc_MyPushButton.cpp: MyPushButton.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc3/Sesion9/Ejercicio2bis -I/usr/include/glm -I/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc3/Model -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include MyPushButton.h -o moc_MyPushButton.cpp
 
+moc_MyComboBox.cpp: MyComboBox.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc3/Sesion9/Ejercicio2bis -I/usr/include/glm -I/home/jordi/Documents/Universidad/IDI/Laboratorio/Bloc3/Model -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtMultimediaWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include MyComboBox.h -o moc_MyComboBox.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
 compiler_uic_make_all: ui_MyForm.h
@@ -363,6 +377,7 @@ ui_MyForm.h: MyForm.ui \
 		MyGLWidget.h \
 		MyLabel.h \
 		MyPushButton.h \
+		MyComboBox.h \
 		../../Model/model.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/uic MyForm.ui -o ui_MyForm.h
 
@@ -377,11 +392,21 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 ####### Compile
 
 main.o: main.cpp MyForm.h \
-		ui_MyForm.h
+		ui_MyForm.h \
+		MyComboBox.h \
+		MyGLWidget.h \
+		../../Model/model.h \
+		MyLabel.h \
+		MyPushButton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 MyForm.o: MyForm.cpp MyForm.h \
-		ui_MyForm.h
+		ui_MyForm.h \
+		MyComboBox.h \
+		MyGLWidget.h \
+		../../Model/model.h \
+		MyLabel.h \
+		MyPushButton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MyForm.o MyForm.cpp
 
 MyGLWidget.o: MyGLWidget.cpp MyGLWidget.h \
@@ -397,6 +422,9 @@ MyLabel.o: MyLabel.cpp MyLabel.h
 MyPushButton.o: MyPushButton.cpp MyPushButton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MyPushButton.o MyPushButton.cpp
 
+MyComboBox.o: MyComboBox.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MyComboBox.o MyComboBox.cpp
+
 moc_MyForm.o: moc_MyForm.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MyForm.o moc_MyForm.cpp
 
@@ -408,6 +436,9 @@ moc_MyLabel.o: moc_MyLabel.cpp
 
 moc_MyPushButton.o: moc_MyPushButton.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MyPushButton.o moc_MyPushButton.cpp
+
+moc_MyComboBox.o: moc_MyComboBox.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_MyComboBox.o moc_MyComboBox.cpp
 
 ####### Install
 

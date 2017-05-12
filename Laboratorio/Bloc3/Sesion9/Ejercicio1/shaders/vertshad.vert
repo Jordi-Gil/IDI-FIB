@@ -17,6 +17,8 @@ uniform vec3 colFocus;
 uniform vec3 posFocus;
 vec3 llumAmbient = vec3(0.2, 0.2, 0.2);
 
+uniform int my_bool;
+
 
 out vec3 fcolor;
 
@@ -57,11 +59,14 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
 
 void main()
 {
+    vec4 posFocus_SCO;
+    if(my_bool == 0) posFocus_SCO = VM * vec4(posFocus, 1.0); //coord escena    
+    else if(my_bool == 1)  posFocus_SCO = vec4(posFocus, 1.0); // coord camera
+    else{
+        posFocus_SCO = VM * TG * vec4(posFocus,1.0); //model
+    }
     vec4 posV_SCO = VM * TG * vec4(vertex,1.0);
-    //vec4 posFocus_SCO = VM * vec4(posFocus, 1.0); //coord escena
-    vec4 posFocus_SCO = vec4(posFocus, 1.0); // coord camera
-    //vec4 posFocus_SCO = VM * TG * vec4(posFocus,1.0);
-
+    
     vec4 L = normalize(posFocus_SCO - posV_SCO);
 
     vec3 NormSCO = normalize(inverse(transpose(mat3(VM * TG)))*normal);

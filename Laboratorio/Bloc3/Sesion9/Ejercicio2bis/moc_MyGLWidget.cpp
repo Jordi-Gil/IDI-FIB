@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MyGLWidget_t {
-    QByteArrayData data[30];
-    char stringdata0[260];
+    QByteArrayData data[32];
+    char stringdata0[271];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -47,28 +47,30 @@ QT_MOC_LITERAL(14, 123, 13), // "ZoomOrtogonal"
 QT_MOC_LITERAL(15, 137, 11), // "Perspective"
 QT_MOC_LITERAL(16, 149, 1), // "b"
 QT_MOC_LITERAL(17, 151, 9), // "Ortogonal"
-QT_MOC_LITERAL(18, 161, 12), // "CarregaModel"
-QT_MOC_LITERAL(19, 174, 3), // "str"
-QT_MOC_LITERAL(20, 178, 11), // "updateTheta"
-QT_MOC_LITERAL(21, 190, 5), // "value"
-QT_MOC_LITERAL(22, 196, 9), // "updatePsi"
-QT_MOC_LITERAL(23, 206, 10), // "setEscalat"
-QT_MOC_LITERAL(24, 217, 6), // "setRed"
-QT_MOC_LITERAL(25, 224, 5), // "color"
-QT_MOC_LITERAL(26, 230, 8), // "setGreen"
-QT_MOC_LITERAL(27, 239, 7), // "setBlue"
-QT_MOC_LITERAL(28, 247, 7), // "setSong"
-QT_MOC_LITERAL(29, 255, 4) // "song"
+QT_MOC_LITERAL(18, 161, 11), // "updateTheta"
+QT_MOC_LITERAL(19, 173, 5), // "value"
+QT_MOC_LITERAL(20, 179, 9), // "updatePsi"
+QT_MOC_LITERAL(21, 189, 10), // "setEscalat"
+QT_MOC_LITERAL(22, 200, 6), // "setRed"
+QT_MOC_LITERAL(23, 207, 5), // "color"
+QT_MOC_LITERAL(24, 213, 8), // "setGreen"
+QT_MOC_LITERAL(25, 222, 7), // "setBlue"
+QT_MOC_LITERAL(26, 230, 7), // "setSong"
+QT_MOC_LITERAL(27, 238, 4), // "song"
+QT_MOC_LITERAL(28, 243, 6), // "setOBJ"
+QT_MOC_LITERAL(29, 250, 7), // "objfile"
+QT_MOC_LITERAL(30, 258, 8), // "setIndex"
+QT_MOC_LITERAL(31, 267, 3) // "ind"
 
     },
     "MyGLWidget\0updatePers\0\0updateOrt\0"
     "updatepsi\0val\0updatetheta\0updateEscalat\0"
     "updateslfov\0nfv\0updateslort\0nrt\0"
     "ZoomPerspectiva\0v\0ZoomOrtogonal\0"
-    "Perspective\0b\0Ortogonal\0CarregaModel\0"
-    "str\0updateTheta\0value\0updatePsi\0"
-    "setEscalat\0setRed\0color\0setGreen\0"
-    "setBlue\0setSong\0song"
+    "Perspective\0b\0Ortogonal\0updateTheta\0"
+    "value\0updatePsi\0setEscalat\0setRed\0"
+    "color\0setGreen\0setBlue\0setSong\0song\0"
+    "setOBJ\0objfile\0setIndex\0ind"
 };
 #undef QT_MOC_LITERAL
 
@@ -78,7 +80,7 @@ static const uint qt_meta_data_MyGLWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      19,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -86,27 +88,28 @@ static const uint qt_meta_data_MyGLWidget[] = {
        7,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,  109,    2, 0x06 /* Public */,
-       3,    0,  110,    2, 0x06 /* Public */,
-       4,    1,  111,    2, 0x06 /* Public */,
-       6,    1,  114,    2, 0x06 /* Public */,
-       7,    1,  117,    2, 0x06 /* Public */,
-       8,    1,  120,    2, 0x06 /* Public */,
-      10,    1,  123,    2, 0x06 /* Public */,
+       1,    0,  114,    2, 0x06 /* Public */,
+       3,    0,  115,    2, 0x06 /* Public */,
+       4,    1,  116,    2, 0x06 /* Public */,
+       6,    1,  119,    2, 0x06 /* Public */,
+       7,    1,  122,    2, 0x06 /* Public */,
+       8,    1,  125,    2, 0x06 /* Public */,
+      10,    1,  128,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      12,    1,  126,    2, 0x0a /* Public */,
-      14,    1,  129,    2, 0x0a /* Public */,
-      15,    1,  132,    2, 0x0a /* Public */,
-      17,    1,  135,    2, 0x0a /* Public */,
-      18,    1,  138,    2, 0x0a /* Public */,
-      20,    1,  141,    2, 0x0a /* Public */,
-      22,    1,  144,    2, 0x0a /* Public */,
-      23,    1,  147,    2, 0x0a /* Public */,
-      24,    1,  150,    2, 0x0a /* Public */,
-      26,    1,  153,    2, 0x0a /* Public */,
-      27,    1,  156,    2, 0x0a /* Public */,
-      28,    1,  159,    2, 0x0a /* Public */,
+      12,    1,  131,    2, 0x0a /* Public */,
+      14,    1,  134,    2, 0x0a /* Public */,
+      15,    1,  137,    2, 0x0a /* Public */,
+      17,    1,  140,    2, 0x0a /* Public */,
+      18,    1,  143,    2, 0x0a /* Public */,
+      20,    1,  146,    2, 0x0a /* Public */,
+      21,    1,  149,    2, 0x0a /* Public */,
+      22,    1,  152,    2, 0x0a /* Public */,
+      24,    1,  155,    2, 0x0a /* Public */,
+      25,    1,  158,    2, 0x0a /* Public */,
+      26,    1,  161,    2, 0x0a /* Public */,
+      28,    1,  164,    2, 0x0a /* Public */,
+      30,    1,  167,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -122,14 +125,15 @@ static const uint qt_meta_data_MyGLWidget[] = {
     QMetaType::Void, QMetaType::Int,   13,
     QMetaType::Void, QMetaType::Bool,   16,
     QMetaType::Void, QMetaType::Bool,   16,
-    QMetaType::Void, QMetaType::QString,   19,
-    QMetaType::Void, QMetaType::Int,   21,
-    QMetaType::Void, QMetaType::Int,   21,
-    QMetaType::Void, QMetaType::Double,   21,
-    QMetaType::Void, QMetaType::Int,   25,
-    QMetaType::Void, QMetaType::Int,   25,
-    QMetaType::Void, QMetaType::Int,   25,
+    QMetaType::Void, QMetaType::Int,   19,
+    QMetaType::Void, QMetaType::Int,   19,
+    QMetaType::Void, QMetaType::Double,   19,
+    QMetaType::Void, QMetaType::Int,   23,
+    QMetaType::Void, QMetaType::Int,   23,
+    QMetaType::Void, QMetaType::Int,   23,
+    QMetaType::Void, QMetaType::QString,   27,
     QMetaType::Void, QMetaType::QString,   29,
+    QMetaType::Void, QMetaType::Int,   31,
 
        0        // eod
 };
@@ -151,14 +155,15 @@ void MyGLWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 8: _t->ZoomOrtogonal((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 9: _t->Perspective((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 10: _t->Ortogonal((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 11: _t->CarregaModel((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 12: _t->updateTheta((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 13: _t->updatePsi((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 14: _t->setEscalat((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 15: _t->setRed((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 16: _t->setGreen((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 17: _t->setBlue((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 18: _t->setSong((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 11: _t->updateTheta((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->updatePsi((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 13: _t->setEscalat((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 14: _t->setRed((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 15: _t->setGreen((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 16: _t->setBlue((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 17: _t->setSong((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 18: _t->setOBJ((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 19: _t->setIndex((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -236,13 +241,13 @@ int MyGLWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 19)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 19;
+        _id -= 20;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 19)
+        if (_id < 20)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 19;
+        _id -= 20;
     }
     return _id;
 }
