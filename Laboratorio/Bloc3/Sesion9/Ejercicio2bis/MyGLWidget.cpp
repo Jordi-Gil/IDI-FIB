@@ -110,7 +110,7 @@ void MyGLWidget::resizeGL (int w, int h)
 
 void MyGLWidget::createBuffers ()
 {
-
+    size = 12;
     carregaModels();
     calculaCapsaModels();
 
@@ -194,67 +194,68 @@ void MyGLWidget::carregaModels(){
     models[10].load("../../models/porsche.obj");
     models[11].load("../../models/ArmyPilot/ArmyPilot.obj");
 
-     for(int i = 0; i < 12; ++i){
-    // Creació del Vertex Array Object per pintar
-        glGenVertexArrays(1, &Vs[i][0]);
-        glBindVertexArray(Vs[i][0]);
-
-        //Vertex
-        glGenBuffers(1, &Vs[i][1]);
-        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][1]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_vertices(), GL_STATIC_DRAW);
-
-        // Activem l'atribut vertexLoc
-        glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(vertexLoc);
-
-        //Normals
-        glGenBuffers(1, &Vs[i][2]);
-        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][2]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_normals(), GL_STATIC_DRAW);
-
-        // Activem l'atribut normalLoc
-        glVertexAttribPointer(normalLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(normalLoc);
-
-        //Normals
-        glGenBuffers(1, &Vs[i][3]);
-        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][3]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_matamb(), GL_STATIC_DRAW);
-
-        // Activem l'atribut matambLoc
-        glVertexAttribPointer(matambLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(matambLoc);
-
-        glGenBuffers(1, &Vs[i][4]);
-        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][4]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_matdiff(), GL_STATIC_DRAW);
-
-        // Activem l'atribut matdiffLoc
-        glVertexAttribPointer(matdiffLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(matdiffLoc);
-
-         // Buffer de component especular
-        glGenBuffers(1, &Vs[i][5]);
-        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][5]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_matspec(), GL_STATIC_DRAW);
-
-        glVertexAttribPointer(matspecLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(matspecLoc);
-
-        // Buffer de component shininness
-        glGenBuffers(1, &Vs[i][6]);
-        glBindBuffer(GL_ARRAY_BUFFER, Vs[i][6]);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3, models[i].VBO_matshin(), GL_STATIC_DRAW);
-
-        glVertexAttribPointer(matshinLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
-        glEnableVertexAttribArray(matshinLoc);
+    for(int i = 0; i < size; ++i){
+       carregaModel(i);
     }
-
-
 }
 
+void MyGLWidget::carregaModel(int i)
+{
+      // Creació del Vertex Array Object per pintar
+      glGenVertexArrays(1, &Vs[i][0]);
+      glBindVertexArray(Vs[i][0]);
 
+      //Vertex
+      glGenBuffers(1, &Vs[i][1]);
+      glBindBuffer(GL_ARRAY_BUFFER, Vs[i][1]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_vertices(), GL_STATIC_DRAW);
+
+      // Activem l'atribut vertexLoc
+      glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(vertexLoc);
+
+      //Normals
+      glGenBuffers(1, &Vs[i][2]);
+      glBindBuffer(GL_ARRAY_BUFFER, Vs[i][2]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_normals(), GL_STATIC_DRAW);
+
+      // Activem l'atribut normalLoc
+      glVertexAttribPointer(normalLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(normalLoc);
+
+      //Normals
+      glGenBuffers(1, &Vs[i][3]);
+      glBindBuffer(GL_ARRAY_BUFFER, Vs[i][3]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_matamb(), GL_STATIC_DRAW);
+
+      // Activem l'atribut matambLoc
+      glVertexAttribPointer(matambLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(matambLoc);
+
+      glGenBuffers(1, &Vs[i][4]);
+      glBindBuffer(GL_ARRAY_BUFFER, Vs[i][4]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_matdiff(), GL_STATIC_DRAW);
+
+      // Activem l'atribut matdiffLoc
+      glVertexAttribPointer(matdiffLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(matdiffLoc);
+
+       // Buffer de component especular
+      glGenBuffers(1, &Vs[i][5]);
+      glBindBuffer(GL_ARRAY_BUFFER, Vs[i][5]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3*3, models[i].VBO_matspec(), GL_STATIC_DRAW);
+
+      glVertexAttribPointer(matspecLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(matspecLoc);
+
+      // Buffer de component shininness
+      glGenBuffers(1, &Vs[i][6]);
+      glBindBuffer(GL_ARRAY_BUFFER, Vs[i][6]);
+      glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*models[i].faces().size()*3, models[i].VBO_matshin(), GL_STATIC_DRAW);
+
+      glVertexAttribPointer(matshinLoc, 1, GL_FLOAT, GL_FALSE, 0, 0);
+      glEnableVertexAttribArray(matshinLoc);
+}
 
 /*
  ********************************
@@ -300,48 +301,50 @@ void MyGLWidget::pinta_wall()
 */
 void MyGLWidget::calculaCapsaModels()
 {
-  for(int i = 0; i < 12; ++i)
+  for(int i = 0; i < size; ++i)
   {
-
-    EsferaModels[i][0].x = EsferaModels[i][1].x = models[i].vertices()[0];
-    EsferaModels[i][0].y = EsferaModels[i][1].y = models[i].vertices()[1];
-    EsferaModels[i][0].z = EsferaModels[i][1].z = models[i].vertices()[2];
-
-    for(unsigned int j = 3; j < models[i].vertices().size(); j+=3)
-    {
-      //Comprovamos la componente 'x'
-      EsferaModels[i][0].x = std::min(EsferaModels[i][0].x,(float) models[i].vertices()[j]);
-      EsferaModels[i][1].x = std::max(EsferaModels[i][1].x,(float) models[i].vertices()[j]);
-
-      //Comprovamos la componente 'y'
-      EsferaModels[i][0].y = std::min(EsferaModels[i][0].y,(float) models[i].vertices()[j+1]);
-      EsferaModels[i][1].y = std::max(EsferaModels[i][1].y,(float) models[i].vertices()[j+1]);
-
-      //Comprovamos la componente 'z'
-      EsferaModels[i][0].z = std::min(EsferaModels[i][0].z,(float) models[i].vertices()[j+2]);
-      EsferaModels[i][1].z = std::max(EsferaModels[i][1].z,(float) models[i].vertices()[j+2]);
-    }
-    //escalat del Model 'i'
-    scales[i] = 2/(EsferaModels[i][1].y - EsferaModels[i][0].y);
-    if(i == 7 or i == 10) scales[i] *= 0.5;
-    if(i == 9)scales[i] *= 0.4;
-    //Centre de la Base del Model 'i'
-    EsferaModels[i][3] = glm::vec3((EsferaModels[i][1].x + EsferaModels[i][0].x)/2,
-                                    EsferaModels[i][0].y,
-                                   (EsferaModels[i][1].z + EsferaModels[i][0].z)/2 );
-    //Centre del Model 'i'
-    EsferaModels[i][2] = glm::vec3((EsferaModels[i][1].x + EsferaModels[i][0].x)/2,
-                                   (EsferaModels[i][1].y + EsferaModels[i][0].y)/2,
-                                   (EsferaModels[i][1].z + EsferaModels[i][0].z)/2 );
-    // r = √((x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1)^2)
-    float auxX = pow((EsferaModels[i][1].x - EsferaModels[i][0].x),2);
-    float auxY = pow((EsferaModels[i][1].y - EsferaModels[i][0].y),2);
-    float auxZ = pow((EsferaModels[i][1].z - EsferaModels[i][0].z),2);
-
-    radiModels[i] = sqrt(auxX + auxY + auxZ);
-
-
+    calculaCapsaModel(i);
   }
+}
+
+void MyGLWidget::calculaCapsaModel(int i)
+{
+  EsferaModels[i][0].x = EsferaModels[i][1].x = models[i].vertices()[0];
+  EsferaModels[i][0].y = EsferaModels[i][1].y = models[i].vertices()[1];
+  EsferaModels[i][0].z = EsferaModels[i][1].z = models[i].vertices()[2];
+
+  for(unsigned int j = 3; j < models[i].vertices().size(); j+=3)
+  {
+    //Comprovamos la componente 'x'
+    EsferaModels[i][0].x = std::min(EsferaModels[i][0].x,(float) models[i].vertices()[j]);
+    EsferaModels[i][1].x = std::max(EsferaModels[i][1].x,(float) models[i].vertices()[j]);
+
+    //Comprovamos la componente 'y'
+    EsferaModels[i][0].y = std::min(EsferaModels[i][0].y,(float) models[i].vertices()[j+1]);
+    EsferaModels[i][1].y = std::max(EsferaModels[i][1].y,(float) models[i].vertices()[j+1]);
+
+    //Comprovamos la componente 'z'
+    EsferaModels[i][0].z = std::min(EsferaModels[i][0].z,(float) models[i].vertices()[j+2]);
+    EsferaModels[i][1].z = std::max(EsferaModels[i][1].z,(float) models[i].vertices()[j+2]);
+  }
+  //escalat del Model 'i'
+  scales[i] = 2/(EsferaModels[i][1].y - EsferaModels[i][0].y);
+  if(i == 7 or i == 10) scales[i] *= 0.5;
+  if(i == 9)scales[i] *= 0.4;
+  //Centre de la Base del Model 'i'
+  EsferaModels[i][3] = glm::vec3((EsferaModels[i][1].x + EsferaModels[i][0].x)/2,
+                                  EsferaModels[i][0].y,
+                                 (EsferaModels[i][1].z + EsferaModels[i][0].z)/2 );
+  //Centre del Model 'i'
+  EsferaModels[i][2] = glm::vec3((EsferaModels[i][1].x + EsferaModels[i][0].x)/2,
+                                 (EsferaModels[i][1].y + EsferaModels[i][0].y)/2,
+                                 (EsferaModels[i][1].z + EsferaModels[i][0].z)/2 );
+  // r = √((x2 - x1)^2 + (y2 - y1)^2 + (z2 - z1)^2)
+  float auxX = pow((EsferaModels[i][1].x - EsferaModels[i][0].x),2);
+  float auxY = pow((EsferaModels[i][1].y - EsferaModels[i][0].y),2);
+  float auxZ = pow((EsferaModels[i][1].z - EsferaModels[i][0].z),2);
+
+  radiModels[i] = sqrt(auxX + auxY + auxZ);
 }
 
 /*
@@ -818,14 +821,23 @@ void MyGLWidget::setSong(QString song)
 //NUEVO
 void MyGLWidget::setOBJ(QString objfile)
 {
-  std::cerr << objfile.toStdString() << "\n";
+  size_t newSize = size + 1;
+  Model *newArrModel = new Model[newSize];
+  memcpy(newArrModel, models,sizeof(Model));
+  size = newSize;
+  delete[] models;
+  models = newArrModel;
+  delete[] newArrModel;
+
+  models[size].load(objfile.toStdString());
+  carregaModel(size);
+  calculaCapsaModel(size);
 }
 
 void MyGLWidget::setIndex(int ind)
 {
   makeCurrent();
   index = ind + 2;
-  std::cerr <<ind + 2 << "\n";
   update();
 }
 

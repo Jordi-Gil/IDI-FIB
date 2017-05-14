@@ -99,7 +99,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void ini_camera_3a_persona();
 
     void carregaModels();
-    void carregaFloor();
+    void carregaModel(int i);
 
     void pinta_model();
     void pinta_floor();
@@ -110,6 +110,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void gira();
 
     void calculaCapsaModels();
+    void calculaCapsaModel(int i);
 
     void resizeOrto();
 
@@ -128,6 +129,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint boolLoc;
 
     int my_bool;
+    int size;
 
     // VAO i VBO names
     GLuint Vs[12][7];
