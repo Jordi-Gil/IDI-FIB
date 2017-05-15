@@ -7,7 +7,6 @@
 #include <QMediaPlayer>
 #include <QtMultimediaWidgets>
 #include <QLabel>
-#include <QTime>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "model.h"
@@ -119,7 +118,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     void restart();
 
     void sizeVectors();
-    int resizeVectors();
+    void resizeVectors();
 
     // attribute locations
     GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;;
@@ -137,11 +136,11 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
     // VAO i VBO names
 
-    Model *models;
-    float *scales;
-    float *radiModels;
-    GLuint **Vs;
-    glm::vec3 **EsferaModels;
+    std::vector<Model> models;
+    std::vector<float> scales;
+    std::vector<float> radiModels;
+    std::vector<std::vector<GLuint> > Vs;
+    std::vector<std::vector<glm::vec3> > EsferaModels;
 
     int index;
 

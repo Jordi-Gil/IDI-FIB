@@ -18,6 +18,8 @@ void MyPushButton::myClicked2()
 {
   objfile = QFileDialog::getOpenFileName(this, tr("Open File"), "/home", "OBJ Files (*.obj)");
 
+  QMessageBox::information(this, tr("File Name"), objfile);
+
   if(!objfile.isEmpty()){
 
     bool ok;

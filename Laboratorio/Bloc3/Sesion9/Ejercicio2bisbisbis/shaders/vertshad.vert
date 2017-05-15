@@ -21,22 +21,12 @@ out mat4 tg;
 out vec4 vertSCO;
 out vec3 normalSCO;
 
-uniform float time;
-uniform float speed = 0.5;
-
 void main()
 {
-    float a=speed*time;
-    mat3 Ry=mat3(vec3(cos(a), 0, -sin(a)),
-    vec3(0, 1, 0),
-    vec3(sin(a), 0, cos(a)));
-    vec3 V=Ry*vertex;
-
     vertSCO = VM * TG * vec4(vertex,1.0);
     normalSCO = normalize(inverse(transpose(mat3(VM * TG)))*normal);
 
     //gl_Position = PM * vertSCO;
-    //gl_Position = PM * VM * TG * vec4 (V, 1.0);
     gl_Position = PM * VM * TG * vec4 (vertex, 1.0);
 
     fmatamb = matamb;

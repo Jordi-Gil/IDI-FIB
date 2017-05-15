@@ -15,6 +15,8 @@ MyGLWidget::~MyGLWidget ()
 
 void MyGLWidget::initializeGL ()
 {
+
+
     x = glm::vec3(1,0,0);
     y = glm::vec3(0,1,0);
     z = glm::vec3(0,0,1);
@@ -177,15 +179,14 @@ void MyGLWidget::carregaShaders()
 
 void MyGLWidget::sizeVectors()
 {
-  models = new (std::nothrow) Model[11];
-  scales = new (std::nothrow) float[size];
-  radiModels = new (std::nothrow) float[size];
+  models.resize(size);
+  scales.resize(size);
+  radiModels.resize(size);
+  Vs.resize(size);
+  for(int i = 0; i < (int) size; ++i) Vs[i].resize(7);
+  EsferaModels.resize(size);
+  for(int i = 0; i < (int) size; ++i) EsferaModels[i].resize(4);
 
-  Vs = new (std::nothrow) GLuint *[11];
-  for(int i = 0; i < 11; ++i) Vs[i] = new (std::nothrow) GLuint[7];
-
-  EsferaModels = new (std::nothrow) glm::vec3 *[11];
-  for(int i = 0; i < 11; ++i) EsferaModels[i] = new (std::nothrow) glm::vec3[4];
 }
 
 void MyGLWidget::carregaModels(){
@@ -713,19 +714,9 @@ void MyGLWidget::resizeOrto()
 void MyGLWidget::gira()
 {
     makeCurrent();
-    time_t now = time(0);
-    float seconds;
-
-    time(&now);
-
-    seconds = now.sec;
-
-    std::cerr << seconds << ' ';
-
-    /*
     for(long long int i = 1; i > 0; ++i)
         for(long long int j = 1; j > 0; ++j);
-    degreesX += M_PI/(4*4*4);*/
+    degreesX += M_PI/(4*4*4);
     update();
 }
 
@@ -843,51 +834,27 @@ void MyGLWidget::setSong(QString song)
     update();
 }
 //NUEVO
-int MyGLWidget::resizeVectors()
+void MyGLWidget::resizeVectors()
 {
-  size_t newSize = size + 1;
-  Model *newArrModel = new (std::nothrow) Model[newSize];
-  memcpy(newArrModel, models, sizeof(Model)*size);
-  delete [] this->models;
-  models = newArrModel;
-
-  float *newScales = new (std::nothrow) float[newSize];
-  memcpy(newScales, scales, sizeof(float)*size);
-  delete [] this->scales;
-  scales = newScales;
-
-  float *newRadis = new (std::nothrow) float[newSize];
-  memcpy(newRadis, radiModels, sizeof(float)*size);
-  delete [] this->radiModels;
-  radiModels = newRadis;
-
-  GLuint **newVS;
-  newVS = new (std::nothrow) GLuint *[newSize];
-  for(int i = 0; i < (int) newSize; ++i) newVS[i] = new (std::nothrow) GLuint [7];
-  for(int i = 0; i < (int) size; ++i) memcpy(newVS[i],Vs[i], sizeof(GLuint)*7);
-  delete [] this->Vs;
-  Vs = newVS;
-
-
-  glm::vec3 **newEsfera = new (std::nothrow) glm::vec3 *[newSize];
-  for(int i = 0; i < (int) newSize; ++i) newEsfera[i] = new (std::nothrow) glm::vec3 [4];
-  for(int i = 0; i < (int) size; ++i) memcpy(newEsfera[i], EsferaModels[i], sizeof(glm::vec3)*4);
-  delete [] this->EsferaModels;
-  EsferaModels = newEsfera;
-
-  return (int) newSize;
+  ++size;
+  models.resize(size);
+  scales.resize(size);
+  radiModels.resize(size);
+  Vs.resize(size);
+  Vs[size-1].resize(7);
+  EsferaModels.resize(size);
+  EsferaModels[size-1].resize(4);
 
 }
 
 void MyGLWidget::setOBJ(QString objfile)
 {
   makeCurrent();
-  int newSize = resizeVectors();
+  resizeVectors();
   std::cerr << objfile.toStdString() << "\n";
-  models[size].load(objfile.toStdString());
-  carregaModel(size);
-  calculaCapsaModel(size);
-  size = newSize;
+  models[size-1].load(objfile.toStdString());
+  carregaModel(size-1);
+  calculaCapsaModel(size-1);
   update();
 
 }
