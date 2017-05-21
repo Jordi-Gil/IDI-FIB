@@ -7,7 +7,7 @@
  */
 
 #ifndef MODEL_H
-#define MODEL_H    
+#define MODEL_H
 
 #include <vector>
 #include <string>
@@ -20,12 +20,12 @@ struct Material {
   float shininess;
   Material();
 };
-#ifndef __MODEL__DEF__ 
+#ifndef __MODEL__DEF__
 extern
 #endif
 std::vector<Material> Materials
 #ifdef __MODEL__DEF__
-(1); 
+(1);
 #else
 ;
 #endif

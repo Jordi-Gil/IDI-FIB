@@ -18,9 +18,9 @@ using namespace std;
 static int material = 1;
 static void loadMTL(std::string filename);
 static int findMat(string material);
-static void omplenormals(vector<Face> &_faces, 
+static void omplenormals(vector<Face> &_faces,
 			 vector<Vertex> const &_vertices);
-static void ompleVBOs(vector<Face> &_faces, 
+static void ompleVBOs(vector<Face> &_faces,
 	              vector<Vertex> const &_vertices,
 	              vector<Normal> const &_normals,
 		      float *&_VBO_vert, float *&_VBO_norm,
@@ -107,7 +107,7 @@ void Model::load(std::string filename) {
 	break;
       default:
 	cerr << "Seen unknown vertex info of type '" << c << "', ignoring it..." << endl;
-	break;  
+	break;
       }
       break;
       //-------------
@@ -169,7 +169,7 @@ void Model::load(std::string filename) {
   omplenormals(_faces, _vertices);  // afegim normals per cara...
 
   // Omplim els vectors per als VBO
-  ompleVBOs(_faces, _vertices, _normals, _VBO_vertices, _VBO_normals, 
+  ompleVBOs(_faces, _vertices, _normals, _VBO_vertices, _VBO_normals,
             _VBO_matamb, _VBO_matdiff, _VBO_matspec, _VBO_matshin);
 }
 
@@ -205,7 +205,7 @@ void Model::dumpModel() const {
     } else {
       for (int j = 0; j < 3; ++j)
 	cout << " " << _faces[i].v[j]/3 + 1 << "//" << _faces[i].n[j]/3 + 1;
-      cout << endl;      
+      cout << endl;
     }
   }
 }
@@ -224,7 +224,7 @@ void Model::parseVOnly(stringstream & ss, string & block) {
 
   ss >> index;
   f.v.push_back(3*index-3);
-  
+
   ss >> index;
   f.v.push_back(3*index-3);
   f.mat = material;
@@ -253,12 +253,12 @@ void Model::parseVN(stringstream & ss, string & block) {
   ssb >> n;
   f.v.push_back(3*index-3); f.n.push_back(3*n-3);
 
-  ss >> block; 
+  ss >> block;
   ssb.clear(); ssb.str(block);
   ssb >> index; ssb >> sep; assert(sep == '/'); ssb >> sep; assert(sep == '/');
   ssb >> n;
-  f.v.push_back(3*index-3); f.n.push_back(3*n-3); 
-  
+  f.v.push_back(3*index-3); f.n.push_back(3*n-3);
+
   ss >> block;
   ssb.clear(); ssb.str(block);
   ssb >> index; ssb >> sep; assert(sep == '/'); ssb >> sep; assert(sep == '/');
@@ -299,7 +299,7 @@ void Model::parseVT(stringstream & ss, string & block) {
   ssb.clear(); ssb.str(block);
   ssb >> index;
   f.v.push_back(3*index-3);
-  
+
   ss >> block;
   ssb.clear(); ssb.str(block);
   ssb >> index;
@@ -341,7 +341,7 @@ void Model::parseVTN(stringstream & ss, string & block) {
   ssb >> index; ssb >> sep; assert(sep == '/'); ssb >> t >> sep; assert(sep == '/');
   ssb >> n;
   f.v.push_back(3*index-3); f.n.push_back(3*n-3);
-  
+
   ss >> block;
   ssb.clear(); ssb.str(block);
   ssb >> index; ssb >> sep; assert(sep == '/'); ssb >> t >> sep; assert(sep == '/');
@@ -401,21 +401,21 @@ static void loadMTL(std::string filename) {
 #if DEBUGPARSER
     cerr << "Processing '" << wrd << "'" << endl;
 #endif
-      for (int i = 0; i < 3; ++i) 
+      for (int i = 0; i < 3; ++i)
 	ss >> Materials.back().ambient[i];
     }
     else if (wrd == "Kd") {
 #if DEBUGPARSER
     cerr << "Processing '" << wrd << "'" << endl;
 #endif
-      for (int i = 0; i < 3; ++i) 
+      for (int i = 0; i < 3; ++i)
 	ss >> Materials.back().diffuse[i];
     }
     else if (wrd == "Ks") {
 #if DEBUGPARSER
     cerr << "Processing '" << wrd << "'" << endl;
 #endif
-      for (int i = 0; i < 3; ++i) 
+      for (int i = 0; i < 3; ++i)
 	ss >> Materials.back().specular[i];
     } else {
 #if DEBUGPARSER
@@ -426,13 +426,13 @@ static void loadMTL(std::string filename) {
 }
 
 static int findMat(string material) {
-  for (unsigned int i = 0; i < Materials.size(); ++i) 
+  for (unsigned int i = 0; i < Materials.size(); ++i)
     if (Materials[i].name == material) return i;
   return 0;
 }
 
 
-static void omplenormals(vector<Face> &_faces, 
+static void omplenormals(vector<Face> &_faces,
 			 const vector<Vertex>  &_vertices) {
   for (unsigned int i = 0; i < _faces.size(); ++i) {
     double v0[3], v1[3];
@@ -445,24 +445,24 @@ static void omplenormals(vector<Face> &_faces,
     }
     double norm = 0;
     double *normalcara = _faces[i].normalC;
-    normalcara[0] = v0[1]*v1[2] - v0[2]*v1[1]; 
+    normalcara[0] = v0[1]*v1[2] - v0[2]*v1[1];
     norm += normalcara[0]*normalcara[0];
-    normalcara[1] = v0[2]*v1[0] - v0[0]*v1[2]; 
+    normalcara[1] = v0[2]*v1[0] - v0[0]*v1[2];
     norm += normalcara[1]*normalcara[1];
-    normalcara[2] = v0[0]*v1[1] - v0[1]*v1[0]; 
+    normalcara[2] = v0[0]*v1[1] - v0[1]*v1[0];
     norm += normalcara[2]*normalcara[2];
     for (int j = 0; j < 3; ++j) normalcara[j] /= sqrt(norm);
   }
 }
 
-static void ompleVBOs(vector<Face> &_faces, 
+static void ompleVBOs(vector<Face> &_faces,
 		      const vector<Vertex> &_vertices,
                       const vector<Normal> &_normals,
-		      float *&_VBO_vert, float *&_VBO_norm, 
-                      float *&_VBO_mata, float *&_VBO_matd, float *&_VBO_matsp, float *&_VBO_matsh) 
+		      float *&_VBO_vert, float *&_VBO_norm,
+                      float *&_VBO_mata, float *&_VBO_matd, float *&_VBO_matsp, float *&_VBO_matsh)
 {
   // Creem els VBOs amb 3*3*faces.size() doubles cadascun
-  _VBO_vert = new float[3*3*_faces.size()];  
+  _VBO_vert = new float[3*3*_faces.size()];
   _VBO_norm = new float[3*3*_faces.size()];
   _VBO_mata = new float[3*3*_faces.size()];
   _VBO_matd = new float[3*3*_faces.size()];
@@ -481,7 +481,7 @@ static void ompleVBOs(vector<Face> &_faces,
         }
 	else {
           _VBO_norm[index+j] = _faces[f].normalC[j];
-        }	
+        }
         _VBO_mata[index+j] = mat.ambient[j];
         _VBO_matd[index+j] = mat.diffuse[j];
         _VBO_matsp[index+j] = mat.specular[j];
