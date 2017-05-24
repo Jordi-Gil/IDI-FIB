@@ -204,7 +204,7 @@ void MyGLWidget::carregaModels(){
     paths.push_back("../../models/dolphin.obj");
     paths.push_back("../../models/f-16.obj");
     paths.push_back("../../models/porsche.obj");
-    
+
     for(int i = 0; i < (int)paths.size(); ++i)
     {
       Model *m = new Model;

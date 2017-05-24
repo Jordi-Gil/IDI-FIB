@@ -1,7 +1,7 @@
 #include <QApplication>
-#include "MyForm.h"
+#include "MainWindow.h"
 
-int main (int argc, char **argv) 
+int main (int argc, char **argv)
 {
   QApplication a( argc, argv);
   QSurfaceFormat f;
@@ -9,9 +9,8 @@ int main (int argc, char **argv)
   f.setProfile(QSurfaceFormat::CoreProfile);
   QSurfaceFormat::setDefaultFormat(f);
 
-  MyForm myf;
-  myf.show();
+  MainWindow mw;
+  mw.show();
 
   return a.exec ();
 }
-

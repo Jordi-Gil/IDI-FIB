@@ -52,8 +52,8 @@ vec3 Phong (vec3 NormSCO, vec3 L, vec4 vertSCO)
 
 void main()
 {
-    vec4 posFocus_aux = viewmatrix * vec4(posFocus,1.0);
-    //vec4 posFocus_aux = vec4(posFocus,1.0);
+    //vec4 posFocus_aux = viewmatrix * vec4(posFocus,1.0);
+    vec4 posFocus_aux = vec4(posFocus,1.0);
     vec3 L = normalize(posFocus_aux.xyz - vertSCO.xyz);
     vec3 normalSCO_f = normalize(normalSCO);
     vec3 fcolor = Phong(normalSCO_f, L, vertSCO);

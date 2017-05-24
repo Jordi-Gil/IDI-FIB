@@ -192,10 +192,9 @@ void MyGLWidget::carregaModels(){
 
 
     //carrega el model
-    std::vector<std::string> paths;
-    paths = {"../../models/Suelo/Files/CobbleStones2.obj", "../../models/fence/grade.obj", "../../models/Patricio.obj", "../../models/homer.obj", "../../models/legoman.obj",
+    std::string paths[] = {"../../models/Suelo/Files/CobbleStones2.obj", "../../models/fence/grade.obj", "../../models/Patricio.obj", "../../models/homer.obj", "../../models/legoman.obj",
   "../../models/legoman-assegut.obj", "../../models/Shaun_Hastings.obj", "../../models/cow.obj", "../../models/dolphin.obj", "../../models/f-16.obj", "../../models/porsche.obj"};
-    for(int i = 0; i < (int)paths.size(); ++i)
+    for(int i = 0; i < 11; ++i)
     {
       Model *m = new Model;
       m->load(paths[i]);
