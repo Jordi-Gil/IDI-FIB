@@ -5,6 +5,6 @@
 ### Clone
 
 ```sh
-git clone https://github.com/Navajas96/IDI-FIB.git
+git clone https://github.com/JordiGil96/IDI-FIB.git
 ```
 
